@@ -1,14 +1,27 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-//import { imagenes } from '../data/imagenes'; // Assuming imagenes is imported correctly
+import { verificarEstadoActividad } from '../services/verificarActividad';
+import ImageOrVideo from './img';
 
-const ImageRotator = (data: any) => {
+const ImageRotator = ({ data }: any) => {
 
-    const imagenes = data.data
+    const publicaciones = data
+
+    //@ts-ignore
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const imagenes: any = []
+
+    publicaciones.forEach((imagen: any) => {
+        if (verificarEstadoActividad(imagen.fecha_inicio, imagen.Fecha_Fin)) {
+            imagenes.push(imagen)
+        }
+    });
+
+    //@ts-ignore
+    console.log(imagenes)
 
     const [currentImage, setCurrentImage] = useState(imagenes[0]);
-
 
     const currentImageIndex = imagenes.findIndex(
         //@ts-ignore
@@ -22,29 +35,12 @@ const ImageRotator = (data: any) => {
         }, currentImage.duration);
 
         return () => clearInterval(intervalId);
-    }, [currentImage.duration, currentImageIndex]);
-
+    }, [currentImage.duration, currentImageIndex, imagenes]);
 
     return (
         <div className='h-full'>
 
-            {
-                (currentImage.type === "img") ?
-
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                        src={'/fotos/' + currentImage.name}
-                        alt="Image"
-                        className='h-full mx-auto'
-                    />
-
-                    :
-
-                    <video src={'/fotos/' + currentImage.name} className='h-full mx-auto' autoPlay />
-
-            }
-
-
+            <ImageOrVideo currentImage={currentImage} />
 
         </div>
     );

@@ -6,6 +6,7 @@ async function Vista() {
 
     const publicidades = await prisma.publicidad.findMany()
 
+
     return (
         <div className='bg-black w-screen h-screen' >
             <Imga

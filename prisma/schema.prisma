@@ -14,12 +14,11 @@ datasource db {
 }
 
 model Publicidad {
-  id               Int      @id @default(autoincrement())
-  name             String
-  type             String
-  status_actividad Boolean
-  duration         Int
-  position         Int?
-  fecha_inicio     DateTime
-  Fecha_Fin        DateTime
+  id           Int      @id @default(autoincrement())
+  name         String
+  type         String
+  duration     Int
+  position     Int?
+  fecha_inicio DateTime
+  Fecha_Fin    DateTime
 }

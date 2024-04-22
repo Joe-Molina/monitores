@@ -16,7 +16,7 @@ export default async function Home() {
           //@ts-ignore
           data={publicidades} />
       </aside>
-      <main className="[grid-area:main] rounded-lg bg-neutral-800 overflow-auto">
+      <main className="[grid-area:main] rounded-lg bg-neutral-900 overflow-auto">
         <ImagenesCard
           //@ts-ignore
           data={publicidades} />

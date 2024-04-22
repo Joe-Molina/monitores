@@ -24,13 +24,13 @@ export async function POST(request: Request) {
 
     console.log('llegamo hasta aca')
 
-    const { name, type, duration } = await request.json();
+    const { name, type, duration, fecha_inicio, Fecha_Fin, status_actividad } = await request.json();
 
     console.log(name, type, duration)
 
     const newPublicidad = await prisma.publicidad.create({
       data: {
-        name, type, duration 
+        name, type, duration, fecha_inicio, Fecha_Fin, status_actividad
       }
     })
     

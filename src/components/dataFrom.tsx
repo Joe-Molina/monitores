@@ -1,5 +1,6 @@
 'use client'
 
+import { verificarEstadoActividad } from '@/app/services/verificarActividad'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -22,6 +23,10 @@ const serviceSubirArchivoACarpeta = async (file: any) => {
 }
 
 const serviceSubirRegistro = async (data: any) => {
+
+
+
+
     const res2 = await fetch('/api/subirInfo', {
         method: "POST",
         body: JSON.stringify(data),
@@ -37,11 +42,14 @@ const serviceSubirRegistro = async (data: any) => {
 
 
 
+
 export function FormCard(data: any) {
     const [file, setFile] = useState()
     const [fileName, setFileName] = useState()
     const [type, setType] = useState('img')
     const [duration, setDuration] = useState(0)
+    let [fecha_inicio, setFecha_inico] = useState()
+    let [Fecha_Fin, setFecha_fin] = useState()
 
     data = data.data
 
@@ -57,20 +65,19 @@ export function FormCard(data: any) {
                 const dataFile = {
                     name: fileName,
                     type: type,
-                    duration: duration
+                    duration: duration,
+                    fecha_inicio,
+                    Fecha_Fin,
                 }
-
 
                 if (compareFillName.length > 0) {
                     return alert("ya hay un documento llamado " + fileName + " debes cambiar el nombre del archivo que quieres guardar antes de subirlo")
 
                 } else {
-
                     // es un archivo nuevo
                     serviceSubirRegistro(dataFile)
                     serviceSubirArchivoACarpeta(file)
                 }
-
 
                 location.reload()
             }}>
@@ -90,6 +97,18 @@ export function FormCard(data: any) {
                     setFileName(e.target.files[0].name)
                 }} required />
                 <input type="number" className='shadow-lg bg-neutral-800 p-2' name="" id="" placeholder="Duracion" onChange={(e) => { const number = Number(e.target.value); setDuration(number * 1000); console.log(number) }} />
+
+                <label htmlFor="">Fecha Inicio</label>
+                <input type="date" className='shadow-lg bg-neutral-800 p-2' onChange={(e) => {
+                    //@ts-ignore
+                    setFecha_inico(new Date(e.target.value))
+                }} />
+
+                <label htmlFor="">Fecha Fin</label>
+                <input type="date" className='shadow-lg bg-neutral-800 p-2' onChange={(e) => {
+                    //@ts-ignore
+                    setFecha_fin(new Date(e.target.value));
+                }} />
 
                 <button className='bg-slate-800 p-3 hover:scale-105 transition shadow-lg '>Subir Imagen</button>
                 {
