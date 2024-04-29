@@ -1,6 +1,9 @@
 'use client'
 
 import { verificarEstadoActividad } from '@/app/services/verificarActividad'
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import { Divide } from 'lucide-react'
 import React from 'react'
 
 const Card = (publi: any) => {
@@ -12,8 +15,8 @@ const Card = (publi: any) => {
 
 
     return (
-        <div className='shadow-lg flex flex-col justify-between max-w-96 cover rounded-sm overflow-hidden w-72 h-[450px] bg-neutral-800 p-3'>
-            <div className='h-56'>
+        <div className='shadow-lg flex flex-col justify-between max-w-96 cover rounded-sm overflow-hidden w-72  bg-neutral-800  border border-neutral-600'>
+            <div className='h-56 bg-black overflow-hidden flex'>
                 {
                     (publi.type !== "video") ?
                         // eslint-disable-next-line @next/next/no-img-element
@@ -22,15 +25,24 @@ const Card = (publi: any) => {
                         <video src={'/fotos/' + publi.name} controls ></video>
                 }
             </div>
-            <div className=''>
-                <p>Nombre: {publi.name}</p>
-                <p>duracion: {publi.duration / 1000 + "s"}</p>
-                <p>Tipo: {publi.type}</p>
-                <p>estado: {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? 'activo' : 'inactivo'}</p>
-                <p>fecha inicio: {fechaInicio}</p>
-                <p>fecha inicio: {fechaFin}</p>
+            <div className='mt-2 p-3'>
+                <p className='p-1 bg-neutral-950/75 rounded-sm px-2  border border-neutral-600'>{publi.name}</p>
+                <div className='flex my-1'>
+                    <div className='flex gap-2 items-center'>
+                        <p className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p>
+                        {publi.type == 'img' ? <div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><img src='/iconos/img.svg' className='h-5 w-5'></img></div> : <div className='bg-neutral-900/70 border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><img src='/iconos/video.svg' className='h-5 w-5'></img></div>}
+                        {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? <Switch checked={true} id="airplane-mode" className='border border-green-800 bg-green-400' /> : <Switch checked={false} id="airplane-mode" className='border border-red-800' />}
+                    </div>
+                    <div className='w-full flex justify-end gap-1 items-center'>
+                        <button onClick={() => handleClick(publi.id)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-neutral-600/10 hover:scale-105 transition'><img src='/iconos/update.svg' className='h-5 w-5'></img></div></button>
+                        <button onClick={() => handleClick(publi.id)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><img src='/iconos/delete.svg' className='h-5 w-5'></img></div></button>
+                    </div>
+                </div>
+                <div className='flex gap-3 justify-between'>
+                    <div className='flex items-center gap-1 text-sm font-medium'> <div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><img src='/iconos/up.svg' className='h-5 w-5'></img></div>{fechaInicio} </div>
+                    <div className='flex items-center gap-1 text-sm font-medium'> <div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm '><img src='/iconos/down.svg' className='h-5 w-5'></img></div>{fechaFin}</div>
+                </div>
             </div>
-            <button onClick={() => handleClick(publi.id)} className='bg-red-600 text-white px-3 py-1 rounded-sm m-1 hover:bg-red-700 transition'>Eliminar</button>
         </div>
     )
 }

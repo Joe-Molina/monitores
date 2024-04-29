@@ -10,7 +10,7 @@ export default async function Home() {
 
 
   return (
-    <main id="app" className="relative max-h-screen h-screen p-2 gap-2 bg-neutral-0">
+    <main id="app" className="relative max-h-screen h-screen p-2 gap-2">
       <aside className="[grid-area:aside] flex-col flex overflow-y-auto rounded-lg bg-neutral-900 text-white">
         <FormCard
           //@ts-ignore

@@ -1,8 +1,22 @@
 'use client'
-
-import { verificarEstadoActividad } from '@/app/services/verificarActividad'
 import Link from 'next/link'
 import React, { useState } from 'react'
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 
 const serviceSubirArchivoACarpeta = async (file: any) => {
@@ -58,7 +72,7 @@ export function FormCard(data: any) {
         file => file.name == fileName)
 
     return (
-        <div className=''>
+        <div className='dark'>
             <form className='flex flex-col p-5 gap-4' onSubmit={async (e) => {
                 e.preventDefault()
 
@@ -84,35 +98,53 @@ export function FormCard(data: any) {
                 <label htmlFor="" className='font-bold'>Sube un Archivo</label>
 
 
-                <select name="" id="" className='bg-neutral-800 p-1 shadow-lg ' required onChange={(e) => { const string = (e.target.value); setType(string); console.log(string) }}>
-                    <option value="img" className=''>imagen</option>
-                    <option value="video" className=''>video</option>
-                </select>
 
+                <RadioGroup defaultValue="option-one">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="img" id="option-one" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
+                        <Label htmlFor="option-one">img (por defecto)</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
+                        <Label htmlFor="option-two" >video</Label >
 
-                <input type="file" className='shadow-lg bg-neutral-800 file file:bg-neutral-700 file:text-white' onChange={(e) => {
-                    //@ts-ignore 
-                    setFile(e.target.files[0])
-                    //@ts-ignore
-                    setFileName(e.target.files[0].name)
-                }} required />
-                <input type="number" className='shadow-lg bg-neutral-800 p-2' name="" id="" placeholder="Duracion" onChange={(e) => { const number = Number(e.target.value); setDuration(number * 1000); console.log(number) }} />
+                    </div>
+                </RadioGroup>
 
-                <label htmlFor="">Fecha Inicio</label>
-                <input type="date" className='shadow-lg bg-neutral-800 p-2' onChange={(e) => {
-                    //@ts-ignore
-                    setFecha_inico(new Date(e.target.value))
-                }} />
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="archivo">Archivo</Label>
+                    <Input id="archivo" type="file" onChange={(e) => {
+                        //@ts-ignore 
+                        setFile(e.target.files[0])
+                        //@ts-ignore
+                        setFileName(e.target.files[0].name)
+                    }} required />
+                </div>
 
-                <label htmlFor="">Fecha Fin</label>
-                <input type="date" className='shadow-lg bg-neutral-800 p-2' onChange={(e) => {
-                    //@ts-ignore
-                    setFecha_fin(new Date(e.target.value));
-                }} />
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="archivo">Duracion en segundos</Label>
+                    <Input type="number" onChange={(e) => { const number = Number(e.target.value); setDuration(number * 1000); console.log(number) }} />
+                </div>
 
-                <button className='bg-slate-800 p-3 hover:scale-105 transition shadow-lg '>Subir Imagen</button>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="archivo">Fecha inicio</Label>
+                    <Input type="date" onChange={(e) => {
+                        //@ts-ignore
+                        setFecha_inico(new Date(e.target.value))
+                    }} />
+                </div>
+
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="archivo">Fecha fin</Label>
+                    <Input type="date" onChange={(e) => {
+                        //@ts-ignore
+                        setFecha_fin(new Date(e.target.value))
+                    }} />
+                </div>
+
+                <Button>Subir Imagen</Button>
                 {
-                    (data.length !== 0) ? <Link href='/vista' className='bg-slate-800 p-3 hover:scale-105 transition text-center shadow-lg '>ir a vista</Link> : <div className='bg-slate-800 p-3 hover:scale-105 transition text-center'>agrega un Archivo</div>
+                    (data.length !== 0) ? <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link> : ''
                 }
             </form>
         </div>
