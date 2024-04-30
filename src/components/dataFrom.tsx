@@ -8,16 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-
 
 const serviceSubirArchivoACarpeta = async (file: any) => {
     const form = new FormData()
@@ -28,44 +18,35 @@ const serviceSubirArchivoACarpeta = async (file: any) => {
     const res = await fetch('/api/upload', {
         method: "POST",
         body: form
-    }
-    )
-
-    const data3 = await res.json()
+    })
+    const dataUpload = await res.json()
     console.log('nuovo archivo')
-    console.log(data3)
+    console.log(dataUpload)
 }
 
 const serviceSubirRegistro = async (data: any) => {
 
-
-
-
-    const res2 = await fetch('/api/subirInfo', {
+    const resInfo = await fetch('/api/subirInfo', {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
             "Content-Type": "application/json",
         },
     })
-
-    const newRegistro = await res2.json()
-    console.log('nuovo registro')
+    const newRegistro = await resInfo.json()
     console.log(newRegistro)
 }
 
 
 
 
-export function FormCard(data: any) {
+export function FormCard({ data }: any) {
     const [file, setFile] = useState()
     const [fileName, setFileName] = useState()
     const [type, setType] = useState('img')
     const [duration, setDuration] = useState(0)
     let [fecha_inicio, setFecha_inico] = useState()
     let [Fecha_Fin, setFecha_fin] = useState()
-
-    data = data.data
 
     const compareFillName = data.filter(
         //@ts-ignore
@@ -76,12 +57,18 @@ export function FormCard(data: any) {
             <form className='flex flex-col p-5 gap-4' onSubmit={async (e) => {
                 e.preventDefault()
 
+                function agregarUnDia(fecha: any) {
+                    const nuevaFecha = new Date(fecha.getTime());
+                    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+                    return nuevaFecha;
+                }
+
                 const dataFile = {
                     name: fileName,
                     type: type,
                     duration: duration,
-                    fecha_inicio,
-                    Fecha_Fin,
+                    fecha_inicio: agregarUnDia(fecha_inicio),
+                    Fecha_Fin: agregarUnDia(Fecha_Fin),
                 }
 
                 if (compareFillName.length > 0) {
@@ -89,20 +76,20 @@ export function FormCard(data: any) {
 
                 } else {
                     // es un archivo nuevo
-                    serviceSubirRegistro(dataFile)
-                    serviceSubirArchivoACarpeta(file)
+                    await serviceSubirRegistro(dataFile)
+                    await serviceSubirArchivoACarpeta(file)
+                    location.reload()
                 }
 
-                location.reload()
             }}>
                 <label htmlFor="" className='font-bold'>Sube un Archivo</label>
 
 
 
-                <RadioGroup defaultValue="option-one">
+                <RadioGroup defaultValue="img">
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="img" id="option-one" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
-                        <Label htmlFor="option-one">img (por defecto)</Label>
+                        <RadioGroupItem value="img" id="img" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
+                        <Label htmlFor="img">img</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
@@ -143,9 +130,7 @@ export function FormCard(data: any) {
                 </div>
 
                 <Button>Subir Imagen</Button>
-                {
-                    (data.length !== 0) ? <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link> : ''
-                }
+                {(data.length !== 0) ? <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link> : <Link href='/sinImagen' className='w-full'><Button className='w-full'>ir a vista</Button></Link>}
             </form>
         </div>
     )
