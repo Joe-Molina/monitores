@@ -1,16 +1,25 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import Imga from './Imagen'
-import { prisma } from '../../libs/prisma'
 import { verificarEstadoActividad } from '../services/verificarActividad'
 import Image from 'next/image'
 
-async function Vista() {
+function Vista() {
+    //@ts-ignore
+    const [publis, setPublis] = useState([]);
 
-    const publicidades = await prisma.publicidad.findMany()
+    useEffect(() => {
+        fetch('/api/subirInfo')
+            .then(res => res.json())
+            .then(data => setPublis(data))
 
-    const ActivePublis = publicidades.filter(publi => verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) === true)
+    }, []); // Empty dependency array: Fetch data once on component mount and start the interval
 
-    console.log(publicidades)
+
+    //@ts-ignore
+    const ActivePublis = publis.filter(publi => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
+
     console.log(ActivePublis)
 
 

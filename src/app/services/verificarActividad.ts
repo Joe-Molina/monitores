@@ -1,7 +1,9 @@
 export const verificarEstadoActividad = (fechaInicio: any, fechaFin: any) => {
     // Comprobación de tipo de datos para las fechas
     if (!(fechaInicio instanceof Date) || !(fechaFin instanceof Date)) {
-        throw new TypeError('fechaInicio y fechaFin deben ser objetos Date');
+        fechaInicio = new Date(fechaInicio)
+        fechaFin = new Date(fechaFin)
+
     }
     // Nombres de variables más descriptivos
     const fechaDeInicio = fechaInicio.getTime();
