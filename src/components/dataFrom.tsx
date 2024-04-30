@@ -130,7 +130,7 @@ export function FormCard({ data }: any) {
                 </div>
 
                 <Button>Subir Imagen</Button>
-                {(data.length !== 0) ? <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link> : <Link href='/sinImagen' className='w-full'><Button className='w-full'>ir a vista</Button></Link>}
+                <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link>
             </form>
         </div>
     )

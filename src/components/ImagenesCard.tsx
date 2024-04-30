@@ -10,10 +10,55 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
+import { Calendar } from "@/components/ui/calendar"
+
 
 const Card = ({ publi }: any) => {
     const fechaInicio = publi.fecha_inicio.toLocaleDateString()
     const fechaFin = publi.Fecha_Fin.toLocaleDateString()
+
+    //calendar edit the time of actual images
+    const [date, setDate] = React.useState<Date | undefined>(new Date())
+
+    const updateInitialTime = async (data: any) => {
+        setDate(data)
+
+        const res = await fetch(`/api/subirInfo/${publi.id}`, {
+            method: "PUT",
+            body: JSON.stringify({ fecha_inicio: data }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const datos = await res.json();
+        if (datos) {
+            location.reload()
+        }
+
+
+
+    }
+
+    const updateEndTime = async (data: any) => {
+        setDate(data)
+
+        const res = await fetch(`/api/subirInfo/${publi.id}`, {
+            method: "PUT",
+            body: JSON.stringify({ Fecha_Fin: data }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const datos = await res.json();
+        if (datos) {
+            location.reload()
+        }
+
+
+
+    }
 
 
     return (
@@ -36,19 +81,32 @@ const Card = ({ publi }: any) => {
                         {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? <Switch checked={true} id="airplane-mode" className='border border-green-800 bg-green-400' /> : <Switch checked={false} id="airplane-mode" className='border border-red-800' />}
                     </div>
                     <div className='w-full flex justify-end gap-1 items-center'>
-                        <button onClick={() => handleClick(publi.id)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-neutral-600/10 hover:scale-105 transition'><img src='/iconos/update.svg' className='h-5 w-5'></img></div></button>
                         <button onClick={() => handleClick(publi.id)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><img src='/iconos/delete.svg' className='h-5 w-5'></img></div></button>
                     </div>
                 </div>
                 <div className='flex gap-3 justify-between'>
                     <Popover>
                         <div className='flex items-center gap-1 text-sm font-medium'> <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><img src='/iconos/up.svg' className='h-5 w-5'></img></div></PopoverTrigger>{fechaInicio} </div>
-                        <PopoverContent>Place content for the popover here.</PopoverContent>
+                        <PopoverContent>
+                            <Calendar
+                                mode="single"
+                                // selected={date}
+                                onSelect={(e) => { updateInitialTime(e) }}
+                                className="rounded-md flex justify-center border"
+                            />
+                        </PopoverContent>
                     </Popover>
 
                     <Popover>
                         <div className='flex items-center gap-1 text-sm font-medium'>{fechaFin}<PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm '><img src='/iconos/down.svg' className='h-5 w-5'></img></div></PopoverTrigger></div>
-                        <PopoverContent>Place content for the popover here.</PopoverContent>
+                        <PopoverContent>
+                            <Calendar
+                                mode="single"
+                                // selected={date}
+                                onSelect={(e) => { updateEndTime(e) }}
+                                className="rounded-md flex justify-center border"
+                            />
+                        </PopoverContent>
                     </Popover>
                 </div>
             </div>
