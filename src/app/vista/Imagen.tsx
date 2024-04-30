@@ -19,7 +19,6 @@ const ImageRotator = ({ data }: any) => {
     });
 
     //@ts-ignore
-    console.log(imagenes)
 
     const [currentImage, setCurrentImage] = useState(imagenes[0]);
 
@@ -30,6 +29,9 @@ const ImageRotator = ({ data }: any) => {
     useEffect(() => {
 
         const intervalId = setInterval(() => {
+            if ((currentImageIndex + 1) % imagenes.length === 0) {
+                return location.reload()
+            }
             let nextIndex = (currentImageIndex + 1) % imagenes.length;
             setCurrentImage(imagenes[nextIndex]);
         }, currentImage.duration);
