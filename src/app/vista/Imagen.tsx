@@ -39,10 +39,22 @@ const ImageRotator = ({ data }: any) => {
         return () => clearInterval(intervalId);
     }, [currentImage.duration, currentImageIndex, imagenes]);
 
+    const [fadeIn, setFadeIn] = useState('fade-in')
+
+    useEffect(() => {
+
+        if (imagenes.length > 1) {
+            setFadeIn('fade-in')
+        } else {
+            setFadeIn('')
+        }
+    }, [imagenes.length])
+
+    // console.log(fadeIn)
     return (
         <div className='h-full'>
 
-            <ImageOrVideo currentImage={currentImage} />
+            <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} />
 
         </div>
     );

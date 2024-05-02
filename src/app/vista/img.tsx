@@ -2,14 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './vista.css'
 
 //@ts-ignore
-const ImageOrVideo = ({ currentImage }: any) => {
-
-    console.log(currentImage)
-
-    const fadeInStyle = {
-        transition: 'opacity 0.5s ease-in-out',  // Animation properties
-
-    };
+const ImageOrVideo = ({ currentImage, fadeIn }: any) => {
 
     if (currentImage.type === "img") {
         return (
@@ -17,14 +10,14 @@ const ImageOrVideo = ({ currentImage }: any) => {
             <img
                 src={'/fotos/' + currentImage.name}
                 alt="Image"
-                className='h-full mx-auto fade-in'
+                className={`h-full mx-auto ${fadeIn}`}
                 key={currentImage.name} // Asigna una key única
 
             />
         );
     } else {
         return (
-            <video src={'/fotos/' + currentImage.name} className='h-full mx-auto fade-in' autoPlay key={currentImage.name} /> // Asigna una key única
+            <video src={'/fotos/' + currentImage.name} className={`h-full mx-auto ${fadeIn}`} autoPlay key={currentImage.name} /> // Asigna una key única
         );
     }
 };
