@@ -6,7 +6,26 @@ import ImageOrVideo from './img';
 
 const ImageRotator = ({ data }: any) => {
 
-    const publicaciones = data
+    let [PriorityOrder, setPriorityOrder] = useState(data)
+
+    useEffect(() => {
+
+
+        const sortByPriority = (a: { position: number }, b: { position: number }) => {
+            if (a.position < b.position) return -1;
+            if (a.position > b.position) return 1;
+            return 0;
+        };
+
+        const sortedArray = [...data].sort(sortByPriority);
+        setPriorityOrder(sortedArray);
+
+        console.log()
+    }, [])
+
+
+
+    const publicaciones = PriorityOrder
 
     //@ts-ignore
     // eslint-disable-next-line react-hooks/exhaustive-deps

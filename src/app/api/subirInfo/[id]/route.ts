@@ -37,27 +37,90 @@ export async function DELETE(request: Request, { params }: Params) {
 
   export async function PUT(request: Request, { params }: Params) {
     try {
-      const { fecha_inicio, Fecha_Fin } =
+      const { fecha_inicio, Fecha_Fin, position } =
         await request.json();
+
+        const thisPubli = await prisma.publicidad.findFirst({
+          where: {
+            id: Number(params.id),
+          }
+        });
+
+        const positionPubli = await prisma.publicidad.findFirst({
+          where: {
+            position,
+          }
+        });
+
+        console.log(thisPubli)
+        console.log(positionPubli)
+
+
+        if(position == positionPubli?.position ){
+
+          console.log('entro al if')
+          const OldPosition = thisPubli?.position
+          const NewPosition = positionPubli?.position
+
+
+          const updateTime = await prisma.publicidad.update({
+            where: {
+              id: Number(params.id),
+            },
+            data: {
+              fecha_inicio,
+              Fecha_Fin,
+              position: NewPosition
+            },
+          });
+
+          const updateTimeSecond = await prisma.publicidad.update({
+            where: {
+              id: positionPubli?.id,
+            },
+            data: {
+              fecha_inicio,
+              Fecha_Fin,
+              position: OldPosition
+            },
+          });
+
+          if (!updateTime) {
+            return NextResponse.json(
+              { message: "card no encontrada" },
+              { status: 404 }
+            );
+          }
+
+          return NextResponse.json(updateTime);
+
+        } else {
+
+          const updateTime = await prisma.publicidad.update({
+            where: {
+              id: Number(params.id),
+            },
+            data: {
+              fecha_inicio,
+              Fecha_Fin,
+              position
+            },
+          });
+      
+          if (!updateTime) {
+            return NextResponse.json(
+              { message: "card no encontrada" },
+              { status: 404 }
+            );
+          }
+
+          return NextResponse.json(updateTime);
+        }
+
+
+
   
-      const updateTime = await prisma.publicidad.update({
-        where: {
-          id: Number(params.id),
-        },
-        data: {
-          fecha_inicio,
-          Fecha_Fin
-        },
-      });
   
-      if (!updateTime) {
-        return NextResponse.json(
-          { message: "card no encontrada" },
-          { status: 404 }
-        );
-      }
-  
-      return NextResponse.json(updateTime);
     } catch (error) {
       if (error instanceof Error) {
         return NextResponse.json(

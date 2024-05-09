@@ -2,7 +2,7 @@
 
 import { verificarEstadoActividad } from '@/app/services/verificarActividad'
 import { Switch } from "@/components/ui/switch"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Popover,
@@ -56,9 +56,11 @@ const Card = ({ publi }: any) => {
             location.reload()
         }
 
-
-
     }
+
+    let [positionn, setPositionn] = useState(0)
+
+
 
 
     return (
@@ -78,8 +80,27 @@ const Card = ({ publi }: any) => {
                     <div className='flex gap-2 items-center'>
                         <Popover>
                             <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-10 h-7 flex justify-center items-center rounded-sm'>{publi.position + ".º"}</div></PopoverTrigger>
-                            <PopoverContent>
-                                <input type="Number" />
+                            <PopoverContent className='w-20'>
+                                <form className='w-10' onSubmit={async (e) => {
+                                    e.preventDefault()
+
+                                    const res = await fetch(`/api/subirInfo/${publi.id}`, {
+                                        method: "PUT",
+                                        body: JSON.stringify({ position: positionn }),
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                    });
+
+                                    const datos = await res.json();
+                                    if (datos) {
+                                        location.reload()
+                                    }
+
+                                }}>
+                                    <input type="Number" className='w-10' required onChange={(e) => { const number = Number(e.target.value); setPositionn(number) }} />
+                                    <input type="submit" value="" className='hidden' />
+                                </form>
                             </PopoverContent>
                         </Popover>
                         <p className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p>
@@ -131,11 +152,29 @@ const handleClick = async (id: any) => {
 }
 
 function ImagenesCard({ data }: any) {
+    let [PriorityOrder, setPriorityOrder] = useState(data)
+
+    useEffect(() => {
+
+
+        const sortByPriority = (a: { position: number }, b: { position: number }) => {
+            if (a.position < b.position) return -1;
+            if (a.position > b.position) return 1;
+            return 0;
+        };
+
+        const sortedArray = [...data].sort(sortByPriority);
+        setPriorityOrder(sortedArray);
+
+
+    }, [])
+
+    console.log(PriorityOrder)
     return (
         <div className='p-3 flex gap-4 justify-stretch flex-wrap overflow-auto text-white'>
 
             {
-                data.map((publi: any, index: any) => (
+                PriorityOrder.map((publi: any, index: any) => (
                     <Card publi={publi} key={index} />
                 ))
             }
