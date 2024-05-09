@@ -44,6 +44,18 @@ const ImageRotator = ({ data }: any) => {
         setCurrentImage(imagenes[nextIndex]);
     }
 
+    const handleKeyPress = (event: { key: string; }) => {
+        console.log(event.key)
+        if (event.key === 'ArrowRight') {
+            let nextIndex = (currentImageIndex + 1) % imagenes.length;
+            setCurrentImage(imagenes[nextIndex]);
+        }
+        if (event.key === 'ArrowLeft') {
+            let nextIndex = (currentImageIndex - 1) % imagenes.length;
+            setCurrentImage(imagenes[nextIndex]);
+        }
+    };
+
     const [fadeIn, setFadeIn] = useState('fade-in')
 
     useEffect(() => {
@@ -55,13 +67,14 @@ const ImageRotator = ({ data }: any) => {
         }
     }, [imagenes.length])
 
+
     // console.log(fadeIn)
     return (
         <div className='h-full '>
 
             <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} className="z-20 absolute" />
 
-            <button className='absolute right-52 bottom-10 px-2 py-1 rounded-sm hover:scale-105 hover:bg-neutral-950 transition border border-slate-600 z-10' onClick={cambiarImg}>pasar imagen</button>
+            <button className='absolute h-full w-full  top-0 left-0' onKeyDown={handleKeyPress} ></button>
         </div>
     );
 };

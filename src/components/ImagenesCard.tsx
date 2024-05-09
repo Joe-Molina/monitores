@@ -76,6 +76,12 @@ const Card = ({ publi }: any) => {
                 <p className='p-1 bg-neutral-950/75 rounded-sm px-2  border border-neutral-600'>{publi.name}</p>
                 <div className='flex my-1'>
                     <div className='flex gap-2 items-center'>
+                        <Popover>
+                            <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-10 h-7 flex justify-center items-center rounded-sm'>{publi.position + ".º"}</div></PopoverTrigger>
+                            <PopoverContent>
+                                <input type="Number" />
+                            </PopoverContent>
+                        </Popover>
                         <p className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p>
                         {publi.type == 'img' ? <div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><img src='/iconos/img.svg' className='h-5 w-5'></img></div> : <div className='bg-neutral-900/70 border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><img src='/iconos/video.svg' className='h-5 w-5'></img></div>}
                         {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? <Switch checked={true} id="airplane-mode" className='border border-green-800 bg-green-400' /> : <Switch checked={false} id="airplane-mode" className='border border-red-800' />}
