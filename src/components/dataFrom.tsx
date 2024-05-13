@@ -7,37 +7,15 @@ import { Button } from "@/components/ui/button"
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { serviceSubirArchivoACarpeta, serviceSubirRegistro } from '@/services/subirPublicacion'
 
 
-const serviceSubirArchivoACarpeta = async (file: any) => {
-    const form = new FormData()
-    //@ts-ignore
-    form.set('file', file)
 
-    //sending file
-    const res = await fetch('/api/upload', {
-        method: "POST",
-        body: form
-    })
-    const dataUpload = await res.json()
-    console.log('nuovo archivo')
-    console.log(dataUpload)
+function agregarUnDia(fecha: any) {
+    const nuevaFecha = new Date(fecha.getTime());
+    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+    return nuevaFecha;
 }
-
-const serviceSubirRegistro = async (data: any) => {
-
-    const resInfo = await fetch('/api/subirInfo', {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-    const newRegistro = await resInfo.json()
-    console.log(newRegistro)
-}
-
-
 
 
 export function FormCard({ data }: any) {
@@ -52,16 +30,23 @@ export function FormCard({ data }: any) {
         //@ts-ignore
         file => file.name == fileName)
 
+
+    const verificarArchivo = async (dataFile: any) => {
+        if (compareFillName.length > 0) {
+            return alert("ya hay un documento llamado " + fileName + " debes cambiar el nombre del archivo que quieres guardar antes de subirlo")
+
+        } else {
+            // es un archivo nuevo
+            await serviceSubirRegistro(dataFile)
+            await serviceSubirArchivoACarpeta(file)
+            location.reload()
+        }
+    }
+
     return (
         <div className='dark'>
             <form className='flex flex-col p-5 gap-4' onSubmit={async (e) => {
                 e.preventDefault()
-
-                function agregarUnDia(fecha: any) {
-                    const nuevaFecha = new Date(fecha.getTime());
-                    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
-                    return nuevaFecha;
-                }
 
                 const dataFile = {
                     name: fileName,
@@ -71,15 +56,7 @@ export function FormCard({ data }: any) {
                     Fecha_Fin: agregarUnDia(Fecha_Fin),
                 }
 
-                if (compareFillName.length > 0) {
-                    return alert("ya hay un documento llamado " + fileName + " debes cambiar el nombre del archivo que quieres guardar antes de subirlo")
-
-                } else {
-                    // es un archivo nuevo
-                    await serviceSubirRegistro(dataFile)
-                    await serviceSubirArchivoACarpeta(file)
-                    location.reload()
-                }
+                verificarArchivo(dataFile)
 
             }}>
                 <label htmlFor="" className='font-bold'>Sube un Archivo</label>

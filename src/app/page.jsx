@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FormCard } from '../components/dataFrom'
-import ImagenesCard from "@/components/ImagenesCard";
+import { PublisCollection } from "@/components/PublisCollection";
 import { prisma } from '../libs/prisma'
 
 
@@ -17,7 +17,7 @@ export default async function Home() {
           data={publicidades} />
       </aside>
       <main className="[grid-area:main] rounded-lg bg-neutral-900 overflow-auto">
-        <ImagenesCard
+        <PublisCollection
           //@ts-ignore
           data={publicidades} />
       </main>

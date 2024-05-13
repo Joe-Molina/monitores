@@ -58,11 +58,6 @@ const ImageRotator = ({ data }: any) => {
         return () => clearInterval(intervalId);
     }, [currentImage.duration, currentImageIndex, imagenes]);
 
-    const cambiarImg = () => {
-        let nextIndex = (currentImageIndex + 1) % imagenes.length;
-        setCurrentImage(imagenes[nextIndex]);
-    }
-
     const handleKeyPress = (event: { key: string; }) => {
         console.log(event.key)
         if (event.key === 'ArrowRight') {
@@ -89,7 +84,7 @@ const ImageRotator = ({ data }: any) => {
 
     // console.log(fadeIn)
     return (
-        <div className='h-full '>
+        <div className='h-full'>
 
             <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} className="z-20 absolute" />
 

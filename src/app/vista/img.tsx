@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import './vista.css'
 
-//@ts-ignore
 const ImageOrVideo = ({ currentImage, fadeIn }: any) => {
 
     if (currentImage.type === "img") {
         return (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
                 src={'/fotos/' + currentImage.name}
                 alt="Image"
-                className={`h-full mx-auto ${fadeIn}`}
-                key={currentImage.name} // Asigna una key única
-
+                className={`h-full mx-auto max-w-[1000px] ${fadeIn}`}
+                key={currentImage.name}
+                fill
             />
         );
     } else {
         return (
-            <video src={'/fotos/' + currentImage.name} className={`h-full mx-auto ${fadeIn}`} autoPlay key={currentImage.name} /> // Asigna una key única
+            <video src={'/fotos/' + currentImage.name} className={`h-full mx-auto ${fadeIn}`} autoPlay key={currentImage.name} />
         );
     }
 };
