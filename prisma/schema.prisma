@@ -13,6 +13,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model usuarios {
+  id           Int         @id @default(autoincrement())
+  username     String
+  email        String
+  password     String
+  tipo_usuario String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  auditoria    auditoria[]
+}
+
+model auditoria {
+  id          Int      @id @default(autoincrement())
+  usuario     usuarios @relation(fields: [id_usuario], references: [id])
+  id_usuario  Int
+  created_at  DateTime @default(now())
+  accion      String
+  descripcion String
+}
+
 model Publicidad {
   id           Int      @id @default(autoincrement())
   name         String

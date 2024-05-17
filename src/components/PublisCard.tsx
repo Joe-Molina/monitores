@@ -15,7 +15,7 @@ import { updateEndTime, updateInitialTime } from '@/services/pulTime'
 import { deletePubli } from '@/services/deletePubli'
 import { useState } from 'react'
 
-export const PubliCard = ({ publi }: any) => {
+export const PubliCard = ({ publi, userId }: any) => {
     const fechaInicio = publi.fecha_inicio.toLocaleDateString()
     const fechaFin = publi.Fecha_Fin.toLocaleDateString()
 

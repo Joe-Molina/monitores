@@ -18,7 +18,7 @@ function agregarUnDia(fecha: any) {
 }
 
 
-export function FormCard({ data }: any) {
+export function FormCard({ data, user }: any) {
     const [file, setFile] = useState()
     const [fileName, setFileName] = useState()
     const [type, setType] = useState('img')
@@ -59,6 +59,8 @@ export function FormCard({ data }: any) {
                 verificarArchivo(dataFile)
 
             }}>
+
+                <h1 className='text-xl font-bold'>Bienvenido {user.name}</h1>
                 <label htmlFor="" className='font-bold'>Sube un Archivo</label>
 
 
