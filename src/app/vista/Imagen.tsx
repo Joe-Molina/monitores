@@ -3,6 +3,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { verificarEstadoActividad } from '../services/verificarActividad';
 import ImageOrVideo from './img';
+import { Progress } from "@/components/ui/progress"
+
+export const useCountdown = (length: number) => {
+    const [seconds, setSeconds] = useState(length);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setSeconds((prevSeconds) =>
+                prevSeconds > 0 ? prevSeconds - 1 : prevSeconds,
+            );
+        }, 1000)
+
+        return () => clearTimeout(timeoutId)
+
+    }, [seconds]);
+
+    return { seconds }
+}
+
 
 const ImageRotator = ({ data }: any) => {
 
@@ -22,8 +41,6 @@ const ImageRotator = ({ data }: any) => {
 
         console.log()
     }, [])
-
-
 
     const publicaciones = PriorityOrder
 
@@ -56,6 +73,8 @@ const ImageRotator = ({ data }: any) => {
         }, currentImage.duration);
 
         return () => clearInterval(intervalId);
+
+
     }, [currentImage.duration, currentImageIndex, imagenes]);
 
     const handleKeyPress = (event: { key: string; }) => {
@@ -81,14 +100,42 @@ const ImageRotator = ({ data }: any) => {
         }
     }, [imagenes.length])
 
+    const Timer = () => {
+        let { seconds } = useCountdown(currentImage.duration / 1000)
 
-    // console.log(fadeIn)
+        const total = publicaciones.length
+
+
+        return (
+            <div>
+                <div className="flex items-center justify-center z-30 absolute border border-white w-10 h-7 rounded-sm top-5 right-3 opacity-45">{currentImageIndex + 1}/{total}</div>
+            </div>
+        )
+    }
+
+    function ProgressDemo() {
+        const [progress, setProgress] = React.useState(0)
+
+
+
+        const fraccionASumar = 100000 / (currentImage.duration)
+        //@ts-ignore
+        setInterval(() => setProgress(parseInt(progress + fraccionASumar)), 950)
+
+        console.log(progress)
+
+
+
+        return <Progress value={progress} className="w-[100%] z-40 absolute bg-white/10 h-2 opacity-25" />
+    }
+
     return (
-        <div className='h-full'>
+        <div className='relative h-full'>
+            <Timer />
+            <ProgressDemo />
+            <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} />
 
-            <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} className="z-20 absolute" />
-
-            <button className='absolute h-full w-full  top-0 left-0' onKeyDown={handleKeyPress} ></button>
+            <button className='absolute h-full w-full  top-0 right-0' onKeyDown={handleKeyPress} ></button>
         </div>
     );
 };

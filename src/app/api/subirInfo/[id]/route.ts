@@ -37,7 +37,7 @@ export async function DELETE(request: Request, { params }: Params) {
 
   export async function PUT(request: Request, { params }: Params) {
     try {
-      const { fecha_inicio, Fecha_Fin, position } =
+      const { fecha_inicio, Fecha_Fin, position, duration } =
         await request.json();
 
         const thisPubli = await prisma.publicidad.findFirst({
@@ -103,7 +103,8 @@ export async function DELETE(request: Request, { params }: Params) {
             data: {
               fecha_inicio,
               Fecha_Fin,
-              position
+              position,
+              duration
             },
           });
       

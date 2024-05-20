@@ -9,6 +9,11 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { serviceSubirArchivoACarpeta, serviceSubirRegistro } from '@/services/subirPublicacion'
 
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 
 function agregarUnDia(fecha: any) {
@@ -111,6 +116,14 @@ export function FormCard({ data, user }: any) {
                 <Button>Subir Imagen</Button>
                 <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link>
             </form>
+            <Popover>
+                <div className='flex w-full px-5'>
+                    <Button className='flex w-full '>Crear Banner</Button>
+                </div>
+                <PopoverContent>
+
+                </PopoverContent>
+            </Popover>
         </div>
     )
 }

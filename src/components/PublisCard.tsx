@@ -20,6 +20,7 @@ export const PubliCard = ({ publi, userId }: any) => {
     const fechaFin = publi.Fecha_Fin.toLocaleDateString()
 
     let [positionn, setPositionn] = useState(0)
+    let [duration, setDuration] = useState(0)
 
     return (
         <div className='shadow-lg flex flex-col justify-between max-w-96 cover rounded-sm overflow-hidden w-72  bg-neutral-800  border border-neutral-600'>
@@ -27,7 +28,9 @@ export const PubliCard = ({ publi, userId }: any) => {
                 {
                     (publi.type !== "video") ?
                         <div className='relative h-56 w-40 mx-auto bg-black overflow-hidden flex'>
-                            <Image src={'/fotos/' + publi.name} alt="" className='mx-auto h-full' fill />
+                            <a href={'/fotos/' + publi.name} target='_blank'>
+                                <Image src={'/fotos/' + publi.name} alt="" className='mx-auto h-full' fill />
+                            </a>
                         </div>
                         :
                         <video src={'/fotos/' + publi.name} controls ></video>
@@ -62,7 +65,32 @@ export const PubliCard = ({ publi, userId }: any) => {
                                 </form>
                             </PopoverContent>
                         </Popover>
-                        <p className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p>
+                        <Popover>
+                            <PopoverTrigger><p className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p></PopoverTrigger>
+                            <PopoverContent className='w-20'>
+                                <form className='w-10' onSubmit={async (e) => {
+                                    e.preventDefault()
+
+                                    const res = await fetch(`/api/subirInfo/${publi.id}`, {
+                                        method: "PUT",
+                                        body: JSON.stringify({ duration: duration }),
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                    });
+
+                                    const datos = await res.json();
+                                    if (datos) {
+                                        location.reload()
+                                    }
+
+                                }}>
+                                    <input type="Number" className='w-10' min="1" required onChange={(e) => { const number = Number(e.target.value); setDuration(number * 1000) }} />
+                                    <input type="submit" value="" className='hidden' />
+                                </form>
+                            </PopoverContent>
+                        </Popover>
+
                         {publi.type == 'img' ? <div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/img.svg' alt='' width={20} height={20} /></div> : <div className='bg-neutral-900/70 border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/video.svg' alt='' width={20} height={20} /></div>}
                         {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? <Switch checked={true} id="airplane-mode" className='border border-green-800 bg-green-400' /> : <Switch checked={false} id="airplane-mode" className='border border-red-800' />}
                     </div>
