@@ -101,7 +101,7 @@ const ImageRotator = ({ data }: any) => {
     }, [imagenes.length])
 
     const Timer = () => {
-        let { seconds } = useCountdown(currentImage.duration / 1000)
+        // let { seconds } = useCountdown(currentImage.duration / 1000)
 
         const total = publicaciones.length
 
@@ -113,17 +113,18 @@ const ImageRotator = ({ data }: any) => {
         )
     }
 
-    function ProgressDemo() {
-        const [progress, setProgress] = React.useState(0)
+    function ProgressBar() {
+        const [progress, setProgress] = useState(0)
 
+        const duracionImg = Number(currentImage.duration)
 
+        const fraccionASumar = 100000 / duracionImg
 
-        const fraccionASumar = 100000 / (currentImage.duration)
-        //@ts-ignore
-        setInterval(() => setProgress(parseInt(progress + fraccionASumar)), 950)
+        const progreso = progress
+        setInterval(() => setProgress(() => {
 
-        console.log(progress)
-
+            return progreso + fraccionASumar;
+        }), 970)
 
 
         return <Progress value={progress} className="w-[100%] z-40 absolute bg-white/10 h-2 opacity-25" />
@@ -132,7 +133,7 @@ const ImageRotator = ({ data }: any) => {
     return (
         <div className='relative h-full'>
             <Timer />
-            <ProgressDemo />
+            <ProgressBar />
             <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} />
 
             <button className='absolute h-full w-full  top-0 right-0' onKeyDown={handleKeyPress} ></button>

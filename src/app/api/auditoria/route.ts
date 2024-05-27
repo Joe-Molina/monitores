@@ -21,12 +21,12 @@ export async function GET() {
   
   export async function POST(request: Request) {
     try {
-      const { id_usuario, accion, descripcion } = await request.json();
+      const { id_usuario, accion, descripcion, tipo } = await request.json();
 
   
       const newPublicidad = await prisma.auditoria.create({
         data: {
-            id_usuario, accion, descripcion 
+            id_usuario, accion, descripcion, tipo
         }
       })
   

@@ -15,7 +15,7 @@ import { updateEndTime, updateInitialTime } from '@/services/pulTime'
 import { deletePubli } from '@/services/deletePubli'
 import { useState } from 'react'
 
-export const PubliCard = ({ publi, userId }: any) => {
+export const PubliCard = ({ publi, user }: any) => {
     const fechaInicio = publi.fecha_inicio.toLocaleDateString()
     const fechaFin = publi.Fecha_Fin.toLocaleDateString()
 
@@ -46,6 +46,22 @@ export const PubliCard = ({ publi, userId }: any) => {
                                 <form className='w-10' onSubmit={async (e) => {
                                     e.preventDefault()
 
+
+                                    await fetch('/api/auditoria', {
+                                        method: "POST",
+                                        body: JSON.stringify({
+                                            id_usuario: Number(user.id),
+                                            accion: user.name,
+                                            descripcion: `se cambio de posicion archivo ${publi.name} de ${publi.position} a ${positionn}`,
+                                            tipo: "cambio de posicion"
+                                        }
+                                        ),
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                    })
+
+
                                     const res = await fetch(`/api/subirInfo/${publi.id}`, {
                                         method: "PUT",
                                         body: JSON.stringify({ position: positionn }),
@@ -59,6 +75,7 @@ export const PubliCard = ({ publi, userId }: any) => {
                                         location.reload()
                                     }
 
+
                                 }}>
                                     <input type="Number" className='w-10' required onChange={(e) => { const number = Number(e.target.value); setPositionn(number) }} />
                                     <input type="submit" value="" className='hidden' />
@@ -70,6 +87,21 @@ export const PubliCard = ({ publi, userId }: any) => {
                             <PopoverContent className='w-20'>
                                 <form className='w-10' onSubmit={async (e) => {
                                     e.preventDefault()
+
+
+                                    await fetch('/api/auditoria', {
+                                        method: "POST",
+                                        body: JSON.stringify({
+                                            id_usuario: Number(user.id),
+                                            accion: user.name,
+                                            descripcion: `cambio de duracion al archivo ${publi.name} de ${publi.duration / 1000} segundos a ${duration / 1000} segundos`,
+                                            tipo: "cambio de duracion"
+                                        }
+                                        ),
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                    })
 
                                     const res = await fetch(`/api/subirInfo/${publi.id}`, {
                                         method: "PUT",
@@ -95,7 +127,7 @@ export const PubliCard = ({ publi, userId }: any) => {
                         {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? <Switch checked={true} id="airplane-mode" className='border border-green-800 bg-green-400' /> : <Switch checked={false} id="airplane-mode" className='border border-red-800' />}
                     </div>
                     <div className='w-full flex justify-end gap-1 items-center'>
-                        <button onClick={() => deletePubli(publi.id)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></div></button>
+                        <button onClick={() => deletePubli(publi.id, user, publi)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></div></button>
                     </div>
                 </div>
                 <div className='flex gap-3 justify-between'>
@@ -105,7 +137,7 @@ export const PubliCard = ({ publi, userId }: any) => {
                             <Calendar
                                 mode="single"
                                 // selected={date}
-                                onSelect={(e) => { updateInitialTime(e, publi.id) }}
+                                onSelect={(e) => { updateInitialTime(e, publi.id, user, fechaInicio, publi.name) }}
                                 className="rounded-md flex justify-center border"
                             />
                         </PopoverContent>
@@ -117,7 +149,7 @@ export const PubliCard = ({ publi, userId }: any) => {
                             <Calendar
                                 mode="single"
                                 // selected={date}
-                                onSelect={(e) => { updateEndTime(e, publi.id) }}
+                                onSelect={(e) => { updateEndTime(e, publi.id, user, fechaFin, publi.name) }}
                                 className="rounded-md flex justify-center border"
                             />
                         </PopoverContent>

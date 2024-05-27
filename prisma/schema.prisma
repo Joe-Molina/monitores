@@ -29,6 +29,7 @@ model auditoria {
   usuario     usuarios @relation(fields: [id_usuario], references: [id])
   id_usuario  Int
   created_at  DateTime @default(now())
+  tipo        String?
   accion      String
   descripcion String
 }

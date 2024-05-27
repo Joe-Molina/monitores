@@ -9,12 +9,10 @@ export const serviceSubirArchivoACarpeta = async (file: any) => {
         body: form
     })
     const dataUpload = await res.json()
-    console.log('nuovo archivo')
-    console.log(dataUpload)
+
 }
 
-export const serviceSubirRegistro = async (data: any) => {
-
+export const serviceSubirRegistro = async (data: any, user: any) => {
     const resInfo = await fetch('/api/subirInfo', {
         method: "POST",
         body: JSON.stringify(data),
@@ -23,5 +21,25 @@ export const serviceSubirRegistro = async (data: any) => {
         },
     })
     const newRegistro = await resInfo.json()
+
+    //usuario que lo subio (id usuario)
+    //accion (subio flayer)
+    //descripcion (id tal, imagen tal)
+
+const resAud = await fetch('/api/auditoria', {
+        method: "POST",
+        body: JSON.stringify({ id_usuario: Number(user.id),
+            accion: user.name,
+            descripcion: `Nueva publicacion  Tipo:${data.type} Nombre:${data.name}`,
+            tipo: "historial"
+        } 
+        ),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+
+    const newAuditoria = await resAud.json()
     console.log(newRegistro)
+    console.log(newAuditoria)
 }
