@@ -3,9 +3,9 @@
 import React, { useState } from 'react'
 import { PublisCollection } from './PublisCollection'
 import { Button } from './ui/button'
+import { BannersCollection } from './BannersCollection'
 
-function Marquee({ publicidades }: any, session: any) {
-
+function Marquee({ publicidades, session }: any) {
     const Banners = publicidades.filter((element: { type: string }) => {
 
         if (element.type == "banner") {
@@ -15,9 +15,14 @@ function Marquee({ publicidades }: any, session: any) {
 
     })
 
-    console.log('banners')
-    console.log(Banners)
+    const publis = publicidades.filter((element: { type: string }) => {
 
+        if (element.type == "img" ||  element.type == "video") {
+
+            return true
+        }
+
+    })
     const [pagePublis, setPagePublis] = useState(true)
 
     const focus = 'bg-neutral-800 text-white hover:bg-neutral-900'
@@ -25,24 +30,24 @@ function Marquee({ publicidades }: any, session: any) {
     return (
         <div className='flex h-full w-full flex-col'>
             <div className='flex gap-2 h-[5%] w-full'>
-                <Button className={pagePublis ? '' : focus} onClick={() => { setPagePublis(true) }}>Archivos</Button>
-                <Button className={pagePublis ? focus : ''} onClick={() => { setPagePublis(false) }}>Banners</Button>
+                <Button className={pagePublis ? focus : ''} onClick={() => { setPagePublis(true) }}>Archivos</Button>
+                <Button className={pagePublis ? '' : focus} onClick={() => { setPagePublis(false) }}>Banners</Button>
             </div>
 
             {pagePublis == true &&
                 <div className='bg-neutral-900 h-[95%]'>
                     <PublisCollection
                         //@ts-ignore
-                        data={publicidades} user={session.user} />
+                        data={publis} user={session.user} />
                 </div>
 
             }
 
             {pagePublis == false &&
                 <div className='bg-neutral-900 h-[95%]'>
-                    <div className='marquee'>
-                        <p>holaa</p>
-                    </div>
+                    <BannersCollection
+                        //@ts-ignore
+                        data={Banners} user={session.user} />
                 </div>
 
             }

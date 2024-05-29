@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/popover"
 
 import { Calendar } from "@/components/ui/calendar"
-import Image from 'next/image'
 import { updateEndTime, updateInitialTime } from '@/services/pulTime'
 import { deletePubli } from '@/services/deletePubli'
 import { useState } from 'react'
+import Image from 'next/image'
 
-export const PubliCard = ({ publi, user }: any) => {
+export const BannersCard = ({ publi, user }: any) => {
     const fechaInicio = publi.fecha_inicio.toLocaleDateString()
     const fechaFin = publi.Fecha_Fin.toLocaleDateString()
 
@@ -23,25 +23,13 @@ export const PubliCard = ({ publi, user }: any) => {
     let [duration, setDuration] = useState(0)
 
     return (
-        <div className='shadow-lg flex flex-col justify-between max-w-96 cover rounded-sm overflow-hidden w-72  bg-neutral-800  border border-neutral-600'>
-            <div className='relative h-56 mx-auto bg-black overflow-hidden flex'>
-                {
-                    (publi.type !== "video") ?
-                        <div className='relative h-56 w-40 mx-auto bg-black overflow-hidden flex'>
-                            <a href={'/fotos/' + publi.name} target='_blank'>
-                                <Image src={'/fotos/' + publi.name} alt="" className='mx-auto h-full' fill />
-                            </a>
-                        </div>
-                        :
-                        <video src={'/fotos/' + publi.name} controls ></video>
-                }
-            </div>
-            <div className='p-1'>
-                <p className='p-1 bg-neutral-950/75 rounded-sm px-2  border border-neutral-600'>{publi.name}</p>
+        <div className='shadow-lg flex flex-col justify-between  cover rounded-sm overflow-hidden w-[500px]  bg-neutral-800  border border-neutral-600'>
+            <div className='p-1 '>
+                <div className='px-1 bg-neutral-950/75 rounded-sm border border-neutral-600 marquee'><p>{publi.name}</p></div>
                 <div className='flex my-1'>
                     <div className='flex gap-2 items-center'>
                         <Popover>
-                            <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-10 h-7 flex justify-center items-center rounded-sm'>{publi.position > 0? publi.position + ".º": '-'}</div></PopoverTrigger>
+                            <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-10 h-7 flex justify-center items-center rounded-sm'>{publi.position > 0?(publi.position - 100) + ".º": '-'}</div></PopoverTrigger>
                             <PopoverContent className='w-20'>
                                 <form className='w-10' onSubmit={async (e) => {
                                     e.preventDefault()
@@ -66,7 +54,7 @@ export const PubliCard = ({ publi, user }: any) => {
 
                                     const res = await fetch(`/api/subirInfo/${publi.id}`, {
                                         method: "PUT",
-                                        body: JSON.stringify({ position: positionn }),
+                                        body: JSON.stringify({ position: positionn + 100 }),
                                         headers: {
                                             "Content-Type": "application/json",
                                         },

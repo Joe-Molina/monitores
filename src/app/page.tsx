@@ -14,9 +14,6 @@ export default async function Home() {
 
   const session = await loginIsRequiredServer();
 
-  //@ts-ignore
-  const userId = session.user.id
-
   return (
     <main id="app" className="relative max-h-screen h-screen p-2 gap-2">
       <aside className="[grid-area:aside] flex-col flex overflow-y-auto rounded-lg bg-neutral-900 text-white">

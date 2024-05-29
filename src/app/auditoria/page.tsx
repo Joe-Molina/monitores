@@ -1,6 +1,3 @@
-import Image from "next/image";
-import { FormCard } from '../../components/dataFrom'
-import { PublisCollection } from "@/components/PublisCollection";
 import { prisma } from '../../libs/prisma'
 import { loginIsRequiredServer } from ".././api/auth/[...nextauth]/route";
 import Link from "next/link";
@@ -22,7 +19,7 @@ export default async function Home() {
     const userId = session.user.id
 
     return (
-        <main id="app" className="relative max-h-screen h-screen p-2 gap-2">
+        <main id="app" className="relative max-h-screen h-screen p-2 gap-2 dark">
             <aside className="[grid-area:aside] flex-col flex overflow-y-auto rounded-lg bg-neutral-900 text-white">
 
                 <div className='flex w-full px-5 py-5'>

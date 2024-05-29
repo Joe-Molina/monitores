@@ -17,6 +17,9 @@ function agregarUnDia(fecha: any) {
 
 
 export function FormCard({ data, user }: any) {
+    const [viewBanner, setViewBanner] = useState(false)
+    const [bannerText, setBannerText] = useState("")
+
     const [file, setFile] = useState()
     const [fileName, setFileName] = useState()
     const [type, setType] = useState('img')
@@ -47,14 +50,16 @@ export function FormCard({ data, user }: any) {
                 e.preventDefault()
 
                 const dataFile = {
-                    name: fileName,
+                    name: viewBanner? bannerText : fileName,
                     type: type,
                     duration: duration,
                     fecha_inicio: agregarUnDia(fecha_inicio),
                     Fecha_Fin: agregarUnDia(Fecha_Fin),
                 }
 
-                verificarArchivo(dataFile)
+                viewBanner? verificarArchivo(dataFile) : await serviceSubirRegistro(dataFile, user);
+                
+                location.reload();
 
             }}>
 
@@ -65,17 +70,36 @@ export function FormCard({ data, user }: any) {
 
                 <RadioGroup defaultValue="img">
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="img" id="img" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
+                        <RadioGroupItem value="img" id="img" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false); console.log(string) }} />
                         <Label htmlFor="img">img</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); console.log(string) }} />
+                        <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false); console.log(string) }} />
                         <Label htmlFor="option-two" >video</Label >
+
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="banner" id="option-3" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(true); console.log(string) }} />
+                        <Label htmlFor="option-3" >banner</Label >
 
                     </div>
                 </RadioGroup>
 
-                <div className="grid w-full max-w-sm items-center gap-1.5">
+                {
+                    viewBanner? 
+                    
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="texto">Texto</Label>
+                    <Input  type="text" onChange={(e) => {
+                        //@ts-ignore 
+                        setBannerText(e.target.value)
+                    }} required />
+                </div>
+                    
+                    
+                    :
+
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="archivo">Archivo</Label>
                     <Input id="archivo" type="file" onChange={(e) => {
                         //@ts-ignore 
@@ -84,6 +108,10 @@ export function FormCard({ data, user }: any) {
                         setFileName(e.target.files[0].name)
                     }} required />
                 </div>
+
+                }
+
+                
 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="archivo">Duracion en segundos</Label>

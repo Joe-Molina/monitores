@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { PubliCard } from './PublisCard';
+import { BannersCard } from './BannersCard';
 
 const sortByPriority = (a: { position: number }, b: { position: number }) => {
     if (a.position < b.position) return -1;
@@ -9,7 +10,7 @@ const sortByPriority = (a: { position: number }, b: { position: number }) => {
     return 0;
 };
 
-export function PublisCollection({ data, user }: any) {
+export function BannersCollection({ data, user }: any) {
     let [PriorityOrder, setPriorityOrder] = useState(data)
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export function PublisCollection({ data, user }: any) {
 
             {
                 PriorityOrder.map((publi: any, index: any) => (
-                    <PubliCard publi={publi} key={index} user={user} />
+                    <BannersCard publi={publi} key={index} user={user} />
                 ))
             }
         </div>

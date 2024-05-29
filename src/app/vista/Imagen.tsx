@@ -108,7 +108,7 @@ const ImageRotator = ({ data }: any) => {
 
         return (
             <div>
-                <div className="flex items-center justify-center z-30 absolute border border-white w-10 h-7 rounded-sm top-5 right-3 opacity-45">{currentImageIndex + 1}/{total}</div>
+                <div className="flex items-center justify-center z-30 absolute border border-white w-10 h-7 rounded-sm top-5 right-3 opacity-70 bg-slate-50">{currentImageIndex + 1}/{total}</div>
             </div>
         )
     }
@@ -127,7 +127,7 @@ const ImageRotator = ({ data }: any) => {
         }), 970)
 
 
-        return <Progress value={progress} className="w-[100%] z-40 absolute bg-white/10 h-2 opacity-25" />
+        return <Progress value={progress} className="w-[100%] z-40 absolute bg-white/10 h-2 opacity-25 dark" />
     }
 
     return (

@@ -19,7 +19,7 @@ export function TablaHistorial({ data }: any) {
 
     console.log(data)
     return (
-        <Table>
+        <Table className="">
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
                 <TableRow>
@@ -45,20 +45,6 @@ export function TablaHistorial({ data }: any) {
                         )
 
                     }
-
-                    // if (dato.tipo == ! 'historial') {
-
-                    //     return (
-
-                    //         <TableRow key={index}>
-                    //             <TableCell className="font-medium">{dato.id}</TableCell>
-                    //             <TableCell>{dato.accion}</TableCell>
-                    //             <TableCell>{dato.descripcion}</TableCell>
-                    //             <TableCell>{dato.created_at.toLocaleString()}</TableCell>
-                    //         </TableRow>
-                    //     )
-
-                    // }
                 })
                 }
 
@@ -74,7 +60,7 @@ export function TablaModificaciones({ data }: any) {
 
     console.log(data)
     return (
-        <Table>
+        <Table className="dark">
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
                 <TableRow>
@@ -127,7 +113,7 @@ function Historial({ data }: any) {
 
     return (
         <>
-            <div className="flex h-[5%] w-full border-b-2 ">
+            <div className="flex h-[5%] w-full border-b-2 text-white">
                 <div className={`w-32  flex justify-center items-center ${press2}`}>
                     <button onClick={() => { setPage(false) }} >Historial</button>
                 </div>
@@ -135,7 +121,7 @@ function Historial({ data }: any) {
                     <button onClick={() => { setPage(true) }} >Modificaciones</button>
                 </div>
             </div>
-            <div className=" w-full h-[95%]">
+            <div className=" w-full h-[95%] text-white">
                 {page == false && <TablaHistorial data={data} />}
                 {page == true && <TablaModificaciones data={data} />}
 
