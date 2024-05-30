@@ -128,7 +128,7 @@ export function FormCard({ data, user }: any) {
 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="archivo">Fecha fin</Label>
-                    <Input type="date" onChange={(e) => {
+                    <Input type="date" className='' onChange={(e) => {
                         //@ts-ignore
                         setFecha_fin(new Date(e.target.value))
                     }} />
