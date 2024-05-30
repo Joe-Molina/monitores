@@ -39,8 +39,12 @@ export function FormCard({ data, user }: any) {
         } else {
             // es un archivo nuevo
             await serviceSubirRegistro(dataFile, user)
-            await serviceSubirArchivoACarpeta(file)
+            if(viewBanner === false){
+                await serviceSubirArchivoACarpeta(file)
+            }
         }
+
+         location.reload();
     }
 
     return (
@@ -56,11 +60,7 @@ export function FormCard({ data, user }: any) {
                     Fecha_Fin: agregarUnDia(Fecha_Fin),
                 }
 
-                viewBanner? await serviceSubirRegistro(dataFile, user): verificarArchivo(dataFile);
-                
-                
-                location.reload();
-
+                verificarArchivo(dataFile)
             }}>
 
                 <h1 className='text-xl font-bold'>Bienvenido {user.name}</h1>
