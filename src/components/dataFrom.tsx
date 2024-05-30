@@ -57,7 +57,7 @@ export function FormCard({ data, user }: any) {
                     Fecha_Fin: agregarUnDia(Fecha_Fin),
                 }
 
-                viewBanner? verificarArchivo(dataFile) : await serviceSubirRegistro(dataFile, user);
+                viewBanner? await serviceSubirRegistro(dataFile, user): verificarArchivo(dataFile);
                 
                 location.reload();
 
