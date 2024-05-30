@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -8,6 +8,15 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { serviceSubirArchivoACarpeta, serviceSubirRegistro } from '@/services/subirPublicacion'
+
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
+import { Calendar } from "@/components/ui/calendar"
+import Image from 'next/image'
 
 function agregarUnDia(fecha: any) {
     const nuevaFecha = new Date(fecha.getTime());
@@ -26,6 +35,10 @@ export function FormCard({ data, user }: any) {
     const [duration, setDuration] = useState(0)
     let [fecha_inicio, setFecha_inico] = useState()
     let [Fecha_Fin, setFecha_fin] = useState()
+    const [dateStart, setDateStart] = React.useState<Date | undefined>(new Date())
+    const [dateEnd, setDateEnd] = React.useState<Date | undefined>(new Date())
+    const [Desde, setDesde] = useState("Desde")
+    const [Hasta, setHasta] = useState("Hasta")
 
     const compareFillName = data.filter(
         //@ts-ignore
@@ -47,6 +60,17 @@ export function FormCard({ data, user }: any) {
          location.reload();
     }
 
+    useEffect(()=> {
+
+        //@ts-ignore
+        setDesde(dateStart.toLocaleDateString())
+
+        //@ts-ignore
+        setHasta(dateEnd.toLocaleDateString())
+
+
+    }, [dateStart, dateEnd])
+
     return (
         <div className='dark'>
             <form className='flex flex-col p-5 gap-4' onSubmit={async (e) => {
@@ -56,8 +80,8 @@ export function FormCard({ data, user }: any) {
                     name: viewBanner? bannerText : fileName,
                     type: type,
                     duration: duration,
-                    fecha_inicio: agregarUnDia(fecha_inicio),
-                    Fecha_Fin: agregarUnDia(Fecha_Fin),
+                    fecha_inicio: dateStart,
+                    Fecha_Fin: dateEnd,
                 }
 
                 verificarArchivo(dataFile)
@@ -118,20 +142,30 @@ export function FormCard({ data, user }: any) {
                     <Input type="number" onChange={(e) => { const number = Number(e.target.value); setDuration(number * 1000); console.log(number) }} />
                 </div>
 
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="archivo">Fecha inicio</Label>
-                    <Input type="date" onChange={(e) => {
-                        //@ts-ignore
-                        setFecha_inico(new Date(e.target.value))
-                    }} />
-                </div>
+                <div className='flex justify-around'>
+                <Popover>
+                        <div className='flex items-center gap-1 text-sm font-medium'> <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/up.svg' alt='' width={20} height={20} /></div></PopoverTrigger>{Desde}</div>
+                        <PopoverContent>
+                            <Calendar
+                                mode="single"
+                                onSelect={setDateStart}
+                                className="rounded-md flex justify-center border"
+                            />
+                        </PopoverContent>
+                    </Popover>
 
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="archivo">Fecha fin</Label>
-                    <Input type="date" className='' onChange={(e) => {
-                        //@ts-ignore
-                        setFecha_fin(new Date(e.target.value))
-                    }} />
+                    <Popover>
+                        <div className='flex items-center gap-1 text-sm font-medium'> <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/down.svg' alt='' width={20} height={20} /></div></PopoverTrigger>{Hasta}</div>
+                        <PopoverContent>
+                            <Calendar
+                                mode="single"
+
+                                onSelect={setDateEnd}
+                                className="rounded-md flex justify-center border"
+                            />
+                        </PopoverContent>
+                    </Popover>
+
                 </div>
 
                 <Button>Subir Imagen</Button>
