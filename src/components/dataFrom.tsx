@@ -40,7 +40,6 @@ export function FormCard({ data, user }: any) {
             // es un archivo nuevo
             await serviceSubirRegistro(dataFile, user)
             await serviceSubirArchivoACarpeta(file)
-            location.reload()
         }
     }
 
@@ -59,6 +58,7 @@ export function FormCard({ data, user }: any) {
 
                 viewBanner? await serviceSubirRegistro(dataFile, user): verificarArchivo(dataFile);
                 
+                
                 location.reload();
 
             }}>
@@ -70,16 +70,16 @@ export function FormCard({ data, user }: any) {
 
                 <RadioGroup defaultValue="img">
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="img" id="img" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false); console.log(string) }} />
+                        <RadioGroupItem value="img" id="img" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false);}} />
                         <Label htmlFor="img">img</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false); console.log(string) }} />
+                        <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false);}} />
                         <Label htmlFor="option-two" >video</Label >
 
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="banner" id="option-3" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(true); console.log(string) }} />
+                        <RadioGroupItem value="banner" id="option-3" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(true);}} />
                         <Label htmlFor="option-3" >banner</Label >
 
                     </div>
