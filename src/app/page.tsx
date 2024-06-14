@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Marquee from "@/components/Marquee";
 
 
+
 export default async function Home() {
 
   const publicidades = await prisma.publicidad.findMany()
