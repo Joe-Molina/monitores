@@ -71,6 +71,8 @@ export function FormCard({ data, user }: any) {
 
     }, [dateStart, dateEnd])
 
+    
+
     return (
         <div className='dark'>
             <form className='flex flex-col p-5 gap-4' onSubmit={async (e) => {

@@ -1,8 +1,8 @@
 import { prisma } from "../../../../libs/prisma";
 import { NextResponse } from "next/server";
-import { asignarPositions } from "../service/asignarPosition";
-import { updateDate } from "../service/updateDate";
-import { updateDuration } from "../service/updateDuration";
+import { asignarPositions } from "../services/asignarPosition";
+import { updateDate } from "../services/updateDate";
+import { updateDuration } from "../services/updateDuration";
 
 interface Params {
   params: { id: string };
