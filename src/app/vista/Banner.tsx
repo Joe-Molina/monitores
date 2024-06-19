@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { verificarEstadoActividad } from "../services/verificarActividad";
+import { verificarEstadoActividad } from "../inicio/services/verificarActividad";
 
 
 export const Banner = ({data}: any) => {

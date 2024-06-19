@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { PubliCard } from './PublisCard';
 import { BannersCard } from './BannersCard';
 
 const sortByPriority = (a: { position: number }, b: { position: number }) => {

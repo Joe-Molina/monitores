@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { PublisCollection } from './PublisCollection'
-import { Button } from './ui/button'
+import { Button } from '../../../components/ui/button'
 import { BannersCollection } from './BannersCollection'
 
 function Marquee({ publicidades, session }: any) {

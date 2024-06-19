@@ -17,6 +17,8 @@ export function PublisCollection({ data, user }: any) {
         setPriorityOrder(sortedArray);
     }, [])
 
+    console.log(PriorityOrder)
+
     return (
         <div className='p-3 flex gap-4 justify-stretch flex-wrap overflow-auto text-white'>
 

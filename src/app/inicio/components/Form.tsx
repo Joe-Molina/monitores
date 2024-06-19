@@ -1,12 +1,13 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 import { serviceSubirArchivoACarpeta, serviceSubirRegistro } from '@/services/subirPublicacion'
 
 import {
@@ -16,16 +17,13 @@ import {
 } from "@/components/ui/popover"
 
 import { Calendar } from "@/components/ui/calendar"
-import Image from 'next/image'
+import { useFormContext } from '../hooks/useForm'
+import ArchiveType from './Form/ArchiveType'
+import ArchiveOrBanner from './Form/ArchiveOrBanner'
 
-function agregarUnDia(fecha: any) {
-    const nuevaFecha = new Date(fecha.getTime());
-    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
-    return nuevaFecha;
-}
+export function Form({ data, user }: any) {
+    const {formState, setTypeForm} = useFormContext()
 
-
-export function FormCard({ data, user }: any) {
     const [viewBanner, setViewBanner] = useState(false)
     const [bannerText, setBannerText] = useState("")
 
@@ -33,8 +31,6 @@ export function FormCard({ data, user }: any) {
     const [fileName, setFileName] = useState()
     const [type, setType] = useState('img')
     const [duration, setDuration] = useState(0)
-    let [fecha_inicio, setFecha_inico] = useState()
-    let [Fecha_Fin, setFecha_fin] = useState()
     const [dateStart, setDateStart] = React.useState<Date | undefined>(new Date())
     const [dateEnd, setDateEnd] = React.useState<Date | undefined>(new Date())
     const [Desde, setDesde] = useState("Desde")
@@ -62,7 +58,7 @@ export function FormCard({ data, user }: any) {
 
     useEffect(()=> {
 
-        //@ts-ignore
+        // @ts-ignore
         setDesde(dateStart.toLocaleDateString())
 
         //@ts-ignore
@@ -71,10 +67,18 @@ export function FormCard({ data, user }: any) {
 
     }, [dateStart, dateEnd])
 
-    
+    useEffect(()=> {
+
+        console.log(file)
+
+    }, [file])
+
+
 
     return (
+
         <div className='dark'>
+
             <form className='flex flex-col p-5 gap-4' onSubmit={async (e) => {
                 e.preventDefault()
 
@@ -90,52 +94,37 @@ export function FormCard({ data, user }: any) {
             }}>
 
                 <h1 className='text-xl font-bold'>Bienvenido {user.name}</h1>
-                <label htmlFor="" className='font-bold'>Sube un Archivo</label>
+
+                <ArchiveType/>
+
+                <ArchiveOrBanner setFile={setFile} file={file}/>
 
 
-
-                <RadioGroup defaultValue="img">
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="img" id="img" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false);}} />
-                        <Label htmlFor="img">img</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="video" id="option-two" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(false);}} />
-                        <Label htmlFor="option-two" >video</Label >
-
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="banner" id="option-3" onClick={(e: any) => { const string = (e.target.value); setType(string); setViewBanner(true);}} />
-                        <Label htmlFor="option-3" >banner</Label >
-
-                    </div>
-                </RadioGroup>
-
-                {
+                {/* {
                     viewBanner? 
                     
                     <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="texto">Texto</Label>
-                    <Input  type="text" onChange={(e) => {
-                        //@ts-ignore 
-                        setBannerText(e.target.value)
-                    }} required />
-                </div>
+                        <Label htmlFor="texto">Texto</Label>
+                        <Input  type="text" onChange={(e) => {
+                            //@ts-ignore 
+                            setBannerText(e.target.value)
+                        }} required />
+                    </div>
                     
                     
                     :
 
                     <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="archivo">Archivo</Label>
-                    <Input id="archivo" type="file" onChange={(e) => {
-                        //@ts-ignore 
-                        setFile(e.target.files[0])
-                        //@ts-ignore
-                        setFileName(e.target.files[0].name)
-                    }} required />
-                </div>
+                        <Label htmlFor="archivo">Archivo</Label>
+                        <Input id="archivo" type="file" onChange={(e) => {
+                            //@ts-ignore 
+                            setFile(e.target.files[0])
+                            //@ts-ignore
+                            setFileName(e.target.files[0].name)
+                        }} required />
+                    </div>
 
-                }
+                } */}
 
                 
 
@@ -178,5 +167,6 @@ export function FormCard({ data, user }: any) {
             </div> */}
 
         </div >
+
     )
 }

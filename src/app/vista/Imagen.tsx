@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
-import { verificarEstadoActividad } from '../services/verificarActividad';
+import { verificarEstadoActividad } from '../inicio/services/verificarActividad';
 import ImageOrVideo from './img';
 import { Progress } from "@/components/ui/progress"
 

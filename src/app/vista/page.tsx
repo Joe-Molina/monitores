@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Imga from './Imagen'
-import { verificarEstadoActividad } from '../services/verificarActividad'
+import { verificarEstadoActividad } from '../inicio/services/verificarActividad'
 import Image from 'next/image'
 import { prisma } from '../../libs/prisma'
 import NoImage from './NoImage'
