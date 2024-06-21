@@ -38,7 +38,7 @@ export const FormProvider = ({children}: props) => {
         dispatch({ type: 'addNamePost', payload: {name}})
     }
 
-    const setDurationForm = (duration: number) => {
+    const setDuraForm = (duration: number) => {
         dispatch({ type: 'addDurationPost', payload: {duration}})
     }
 
@@ -53,13 +53,14 @@ export const FormProvider = ({children}: props) => {
     const setPositionForm = (position: number) => {
         dispatch({ type: 'addPositionPost', payload: {position}})
     }
+
     return (
         <FormContext.Provider value={{
             formState,
+            setDuraForm,
             setTypeForm,
             setIdForm,
             setNameForm,
-            setDurationForm,
             setStartDateForm,
             setEndDateForm,
             setPositionForm

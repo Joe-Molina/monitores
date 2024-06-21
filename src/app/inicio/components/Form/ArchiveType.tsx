@@ -6,13 +6,15 @@ import { useFormContext } from '../../hooks/useForm'
 
 
 const OptionType = ({type}: any) => {
-    const {setTypeForm} = useFormContext()
-    const handleClick = (e: any) => {
-        setTypeForm(e.target.value)
-    }
+    const {setTypeForm, formState} = useFormContext()
+
+    const handleClick = () => {
+        setTypeForm(type)
+      }
+
     return(
             <div className="flex items-center space-x-2">
-                <RadioGroupItem value={type} id={type} onClick={(e: any) => handleClick(e)} />
+                <RadioGroupItem value={type} id={type} onClick={() => handleClick()} />
                 <Label htmlFor={type}>{type}</Label>
             </div>
 

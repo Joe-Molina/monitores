@@ -3,10 +3,7 @@ import { useFormContext } from '../../hooks/useForm'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const CardArchiveOrData = (functions:any) => {
-
-    console.log(functions.type)
-
+const CardArchive = (functions:any) => {
     return(
         <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="archivo">Archivo</Label>
@@ -22,48 +19,46 @@ const CardArchiveOrData = (functions:any) => {
 }
 
 
+const CardNameBanner = (functions:any) => {
+    return(
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="texto">Texto</Label>
+        <Input  type="text" onChange={(e: any) => {
+
+            functions.setNameForm(e.target.value)
+        }} required />
+        </div>
+    )
+}
+
 
 
 export default function ArchiveOrBanner({setFile}: any) {
-
     const {formState, setNameForm} = useFormContext()
-
     const FormType = formState.Form.type
-
-    console.log(FormType)
 
     switch (FormType) {
 
         case "banner":
+            console.log(FormType)
             return(
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="texto">Texto</Label>
-                <Input  type="text" onChange={(e: any) => {
-
-                    setNameForm(e.target.value)
-                }} required />
-                </div>
+                <CardNameBanner setNameForm={setNameForm}/>
             );
 
         case "img": 
+        console.log(FormType)
             return(
-                <CardArchiveOrData setFile={setFile} setNameForm={setNameForm} type={FormType}/>
+                <CardArchive setFile={setFile} setNameForm={setNameForm}/>
             )
 
             
         case "video": 
+        console.log(FormType)
         return(
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="archivo">Archivo</Label>
-            <Input id="archivo" type="file" onChange={(e: any) => {
-                setFile(e.target.files[0])
-                setNameForm(e.target.files[0].name)
-            }} required />
-        </div>
+                <CardArchive setFile={setFile} setNameForm={setNameForm}/>
         )
     
-        default:
-            break;
+       
     }
 
 }

@@ -5,7 +5,7 @@ export const useFormContext = () => {
   const {
     formState,
     setTypeForm,
-    setDurationForm,
+    setDuraForm,
     setEndDateForm,
     setIdForm,
     setNameForm,
@@ -21,5 +21,6 @@ export const useFormContext = () => {
     setNameForm,
     setPositionForm,
     setStartDateForm,
+    setDuraForm,
   };
 };

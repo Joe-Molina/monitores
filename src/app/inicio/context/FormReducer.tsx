@@ -4,6 +4,7 @@ import { FormState } from "../interfaces/interfaces";
 
 type FormAction = 
     | {type: "addTypePost", payload: {type: string}}
+    | {type: "addType2Post", payload: {type: string}}
     | {type: "addIdPost", payload: {id: number}}
     | {type: "addNamePost", payload: {name: string}}
     | {type: "addPositionPost", payload: {position: number}}
@@ -20,6 +21,12 @@ export const formReducer = (state: FormState, action: FormAction): FormState => 
                 ...state,
                 Form: {...state.Form, type: action.payload.type}
             }
+
+            case "addType2Post":
+                return {
+                    ...state,
+                    Form: {...state.Form, type: action.payload.type}
+                }
         
         case "addIdPost":
             return {
@@ -39,12 +46,6 @@ export const formReducer = (state: FormState, action: FormAction): FormState => 
                 Form: {...state.Form, position: action.payload.position}
             }
                     
-        case "addDurationPost":
-            return {
-                ...state,
-                Form: {...state.Form, duration: action.payload.duration}
-            }
-                    
         case "addStartDatePost":
             return {
                 ...state,
@@ -56,6 +57,12 @@ export const formReducer = (state: FormState, action: FormAction): FormState => 
                 ...state,
                 Form: {...state.Form, Fecha_Fin: action.payload.Fecha_Fin}
             }
+
+            case "addDurationPost":
+                return {
+                    ...state,
+                    Form: {...state.Form, duration: action.payload.duration}
+                }
 
         default:
             return state;
