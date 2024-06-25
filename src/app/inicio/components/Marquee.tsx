@@ -9,7 +9,6 @@ function Marquee({ publicidades, session }: any) {
     const Banners = publicidades.filter((element: { type: string }) => {
 
         if (element.type == "banner") {
-
             return true
         }
 
@@ -36,23 +35,15 @@ function Marquee({ publicidades, session }: any) {
 
             {pagePublis == true &&
                 <div className='bg-neutral-900 h-[95%]'>
-                    <PublisCollection
-                        //@ts-ignore
-                        data={publis} user={session.user} />
+                    <PublisCollection data={publis} user={session.user} />
                 </div>
-
             }
 
             {pagePublis == false &&
                 <div className='bg-neutral-900 h-[95%]'>
-                    <BannersCollection
-                        //@ts-ignore
-                        data={Banners} user={session.user} />
+                    <BannersCollection data={Banners} user={session.user} />
                 </div>
-
             }
-
-
         </div>
     )
 }

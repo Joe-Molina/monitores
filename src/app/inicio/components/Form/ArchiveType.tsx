@@ -6,7 +6,7 @@ import { useFormContext } from '../../hooks/useForm'
 
 
 const OptionType = ({type}: any) => {
-    const {setTypeForm, formState} = useFormContext()
+    const {setTypeForm} = useFormContext()
 
     const handleClick = () => {
         setTypeForm(type)
@@ -28,7 +28,6 @@ export default function ArchiveType() {
   return (
     <>
     <label htmlFor="" className='font-bold'>Sube un Archivo</label>
-
     <RadioGroup defaultValue="img">
         <OptionType type="img"/>
         <OptionType type="video"/>

@@ -11,7 +11,6 @@ export default function DurationCard() {
     const handleClick = (e: any) => {
     const number = Number(e.target.value);
      setDuraForm(number * 1000);
-      console.log(formState.Form.duration) 
 }
 
   return (
