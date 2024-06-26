@@ -16,8 +16,10 @@ import { deletePubli } from '@/services/deletePubli'
 import { useState } from 'react'
 
 export const PubliCard = ({ publi, user }: any) => {
-    const fechaInicio = publi.fecha_inicio.toLocaleDateString()
-    const fechaFin = publi.Fecha_Fin.toLocaleDateString()
+    const fechaInicio = publi.fecha_inicio
+    const fechaFin = publi.Fecha_Fin
+
+    // .toLocaleDateString()
 
     let [positionn, setPositionn] = useState(0)
     let [duration, setDuration] = useState(0)

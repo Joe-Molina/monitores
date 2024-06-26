@@ -1,12 +1,22 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PublisCollection } from './PublisCollection'
 import { Button } from '../../../components/ui/button'
 import { BannersCollection } from './BannersCollection'
-
+import { usePostsContext } from '../hooks/usePosts'
 function Marquee({ publicidades, session }: any) {
-    const Banners = publicidades.filter((element: { type: string }) => {
+    
+    
+    const {postsState, setPost, setPosts} = usePostsContext()
+
+    useEffect(() => {
+        setPosts()
+    }, [])
+
+    console.log(postsState)
+
+    const Banners = postsState.Posts.filter((element: { type: string }) => {
 
         if (element.type == "banner") {
             return true
@@ -14,7 +24,7 @@ function Marquee({ publicidades, session }: any) {
 
     })
 
-    const publis = publicidades.filter((element: { type: string }) => {
+    const publis = postsState.Posts.filter((element: { type: string }) => {
 
         if (element.type == "img" ||  element.type == "video") {
 
@@ -23,6 +33,9 @@ function Marquee({ publicidades, session }: any) {
 
     })
     const [pagePublis, setPagePublis] = useState(true)
+
+    console.log('pagepublis')
+    console.log(pagePublis)
 
     const focus = 'bg-neutral-800 text-white hover:bg-neutral-900'
 
@@ -33,13 +46,13 @@ function Marquee({ publicidades, session }: any) {
                 <Button className={pagePublis ? '' : focus} onClick={() => { setPagePublis(false) }}>Banners</Button>
             </div>
 
-            {pagePublis == true &&
+            {pagePublis == true &&  postsState.Posts.length > 0  &&
                 <div className='bg-neutral-900 h-[95%]'>
                     <PublisCollection data={publis} user={session.user} />
                 </div>
             }
 
-            {pagePublis == false &&
+            {pagePublis == false &&   postsState.Posts.length > 0  &&
                 <div className='bg-neutral-900 h-[95%]'>
                     <BannersCollection data={Banners} user={session.user} />
                 </div>

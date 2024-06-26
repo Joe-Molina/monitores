@@ -5,8 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Marquee from "./inicio/components/Marquee";
 import { FormProvider } from "./inicio/context/FormProvider";
-
-
+import { PostsProvider } from './inicio/context/PostProvider';
 
 export default async function Home() {
 
@@ -15,6 +14,7 @@ export default async function Home() {
   const session = await loginIsRequiredServer();
 
   return (
+        <PostsProvider>
         <FormProvider>
     <main id="app" className="relative max-h-screen h-screen p-2 gap-2">
       <aside className="[grid-area:aside] flex-col flex overflow-y-auto rounded-lg bg-neutral-900 text-white">
@@ -30,6 +30,7 @@ export default async function Home() {
       </main>
     </main>
           </FormProvider>
+          </PostsProvider>
   );
 }
 

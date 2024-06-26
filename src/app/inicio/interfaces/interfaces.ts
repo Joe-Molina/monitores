@@ -11,3 +11,7 @@ export interface Post {
 export interface FormState {
   Form: Post;
 }
+
+export interface PostState {
+  Posts: Post[];
+}

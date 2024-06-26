@@ -16,8 +16,10 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 export const BannersCard = ({ publi, user }: any) => {
-    const fechaInicio = publi.fecha_inicio.toLocaleDateString()
-    const fechaFin = publi.Fecha_Fin.toLocaleDateString()
+    const fechaInicio = publi.fecha_inicio
+    const fechaFin = publi.Fecha_Fin
+
+    // .toLocaleDateString()s
 
     let [positionn, setPositionn] = useState(0)
     let [duration, setDuration] = useState(0)
