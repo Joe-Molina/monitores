@@ -1,8 +1,9 @@
 'use client'
 
-import { FormState } from "../interfaces/interfaces";
+import { FormState, Post } from "../interfaces/interfaces";
 
 type FormAction = 
+    | {type: "emptyPost", payload: {emptyPost: Post}}
     | {type: "addTypePost", payload: {type: string}}
     | {type: "addType2Post", payload: {type: string}}
     | {type: "addIdPost", payload: {id: number}}
@@ -16,6 +17,12 @@ type FormAction =
 export const formReducer = (state: FormState, action: FormAction): FormState => {
     
     switch (action.type) {
+        case "emptyPost":
+            return {
+                ...state,
+                Form: action.payload.emptyPost
+            }
+
         case "addTypePost":
             return {
                 ...state,

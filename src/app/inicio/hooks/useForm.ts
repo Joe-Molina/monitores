@@ -11,6 +11,7 @@ export const useFormContext = () => {
     setNameForm,
     setPositionForm,
     setStartDateForm,
+    setEmptyForm,
   } = useContext(FormContext);
 
   return {
@@ -22,5 +23,6 @@ export const useFormContext = () => {
     setPositionForm,
     setStartDateForm,
     setDuraForm,
+    setEmptyForm,
   };
 };

@@ -39,6 +39,5 @@ export const serviceSubirRegistro = async (data: any, user: any) => {
   });
 
   const newAuditoria = await resAud.json();
-  console.log(newRegistro);
-  console.log(newAuditoria);
+  return newRegistro;
 };

@@ -23,10 +23,12 @@ export const verificarArchivo = async (
         " debes cambiar el nombre del archivo que quieres guardar antes de subirlo"
     );
   } else {
-    await serviceSubirRegistro(formState.Form, user);
+    const data = await serviceSubirRegistro(formState.Form, user);
 
     if (file) {
       await serviceSubirArchivoACarpeta(file);
+
+      return data;
     }
   }
 };

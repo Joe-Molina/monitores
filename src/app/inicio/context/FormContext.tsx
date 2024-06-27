@@ -1,10 +1,11 @@
 'use client'
 
 import { createContext } from "react";
-import { FormState } from "../interfaces/interfaces";
+import { FormState, Post } from "../interfaces/interfaces";
 
 export type FormContextProps = {
   formState: FormState,
+  setEmptyForm: (emptyPost: Post) => void
   setDuraForm: (duration: number) => void,
   setTypeForm: (type: string) => void,
   setIdForm: (id: number) => void,

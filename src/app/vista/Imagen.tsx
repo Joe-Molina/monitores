@@ -29,7 +29,6 @@ const ImageRotator = ({ data }: any) => {
 
     useEffect(() => {
 
-
         const sortByPriority = (a: { position: number }, b: { position: number }) => {
             if (a.position < b.position) return -1;
             if (a.position > b.position) return 1;
@@ -38,8 +37,6 @@ const ImageRotator = ({ data }: any) => {
 
         const sortedArray = [...data].sort(sortByPriority);
         setPriorityOrder(sortedArray);
-
-        console.log()
     }, [])
 
     const publicaciones = PriorityOrder
@@ -65,7 +62,9 @@ const ImageRotator = ({ data }: any) => {
         const intervalId = setInterval(() => {
 
             if ((currentImageIndex + 1) % imagenes.length === 0) {
-                return location.reload()
+                // en vez de un location reload podria hacer un una peticion fetch que actualizara el estado de las publicaciones al final de cada ciclo,
+                // lo que evitaria la necesidad de tener que recargar la pagina para obtener los nuevos datos
+                return location.reload();
             }
 
             let nextIndex = (currentImageIndex + 1) % imagenes.length;

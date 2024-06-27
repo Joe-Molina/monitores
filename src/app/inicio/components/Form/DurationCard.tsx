@@ -6,7 +6,7 @@ import { useFormContext } from '../../hooks/useForm'
 
 
 export default function DurationCard() {
-    const {setDuraForm,formState} = useFormContext()
+    const {setDuraForm} = useFormContext()
     
     const handleClick = (e: any) => {
     const number = Number(e.target.value);

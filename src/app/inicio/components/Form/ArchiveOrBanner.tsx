@@ -40,20 +40,17 @@ export default function ArchiveOrBanner({setFile}: any) {
     switch (FormType) {
 
         case "banner":
-            console.log(FormType)
             return(
                 <CardNameBanner setNameForm={setNameForm}/>
             );
 
         case "img": 
-        console.log(FormType)
             return(
                 <CardArchive setFile={setFile} setNameForm={setNameForm}/>
             )
 
             
         case "video": 
-        console.log(FormType)
         return(
                 <CardArchive setFile={setFile} setNameForm={setNameForm}/>
         )

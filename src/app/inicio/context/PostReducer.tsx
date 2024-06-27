@@ -7,6 +7,7 @@ type PostAction =
     | {type: "addPost", payload: {post: Post}}
     | {type: "addPosts", payload: Post[]}
     | {type: "deletePost", payload: {id: number}}
+    | {type: "changeDurationPost", payload: {idd: number, newData: number}}
 
 export const postsReducer = (state: PostState, action: PostAction): PostState => {
     
@@ -24,14 +25,22 @@ export const postsReducer = (state: PostState, action: PostAction): PostState =>
             }
 
             case "addPosts":
-            console.log('sexo')
             const data = action.payload
-            console.log(data)
-
             return {
                 ...state,
                 Posts: data
             }
+
+            case "changeDurationPost":
+                const { idd, newData } = action.payload;
+                return {
+                    ...state,
+                    Posts: state.Posts.map(post => 
+                        post.id === idd ? { ...post, newData } : post
+                    ),
+                };
+
+
         default:
             return state;
     }

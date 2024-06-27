@@ -5,37 +5,17 @@ import { PublisCollection } from './PublisCollection'
 import { Button } from '../../../components/ui/button'
 import { BannersCollection } from './BannersCollection'
 import { usePostsContext } from '../hooks/usePosts'
-function Marquee({ publicidades, session }: any) {
+function Marquee({ session }: any) {
     
     
     const {postsState, setPost, setPosts} = usePostsContext()
+    const {Posts} = postsState
 
     useEffect(() => {
-        setPosts()
-    }, [])
+        setPosts(); 
+    }, []);
 
-    console.log(postsState)
-
-    const Banners = postsState.Posts.filter((element: { type: string }) => {
-
-        if (element.type == "banner") {
-            return true
-        }
-
-    })
-
-    const publis = postsState.Posts.filter((element: { type: string }) => {
-
-        if (element.type == "img" ||  element.type == "video") {
-
-            return true
-        }
-
-    })
     const [pagePublis, setPagePublis] = useState(true)
-
-    console.log('pagepublis')
-    console.log(pagePublis)
 
     const focus = 'bg-neutral-800 text-white hover:bg-neutral-900'
 
@@ -46,15 +26,15 @@ function Marquee({ publicidades, session }: any) {
                 <Button className={pagePublis ? '' : focus} onClick={() => { setPagePublis(false) }}>Banners</Button>
             </div>
 
-            {pagePublis == true &&  postsState.Posts.length > 0  &&
+            {pagePublis == true &&
                 <div className='bg-neutral-900 h-[95%]'>
-                    <PublisCollection data={publis} user={session.user} />
+                    <PublisCollection user={session.user} />
                 </div>
             }
 
-            {pagePublis == false &&   postsState.Posts.length > 0  &&
+            {pagePublis == false &&  Posts.length > 0  &&
                 <div className='bg-neutral-900 h-[95%]'>
-                    <BannersCollection data={Banners} user={session.user} />
+                    <BannersCollection data={Posts} user={session.user} />
                 </div>
             }
         </div>

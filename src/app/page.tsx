@@ -26,7 +26,7 @@ export default async function Home() {
         </div>
       </aside>
       <main className="[grid-area:main] rounded-lg bg-neutral-900 overflow-auto">
-        <Marquee publicidades={publicidades} session={session} />
+        <Marquee session={session} />
       </main>
     </main>
           </FormProvider>

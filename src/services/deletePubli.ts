@@ -1,8 +1,11 @@
 export const deletePubli = async (id: any, user: any, publi: any) => {
+  console.log(id);
+
   const res2 = await fetch(`/api/subirInfo/${id}`, {
     method: "DELETE",
   });
-  await res2.json();
+  const data = await res2.json();
+  console.log(data);
 
   const resAud = await fetch("/api/auditoria", {
     method: "POST",
@@ -17,6 +20,6 @@ export const deletePubli = async (id: any, user: any, publi: any) => {
     },
   });
 
-  //   const newAuditoria = await resAud.json(); // usar para enviar la respuesta al cliente
-  location.reload();
+  const datos = await resAud.json();
+  return data;
 };

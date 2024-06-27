@@ -1,7 +1,7 @@
 'use client'
 
 import { useReducer } from "react";
-import { FormState } from "../interfaces/interfaces";
+import { FormState, Post } from "../interfaces/interfaces";
 import { FormContext } from "./FormContext";
 import { formReducer } from "./FormReducer";
 
@@ -25,6 +25,10 @@ const INITIAL_STATE: FormState = {
 export const FormProvider = ({children}: props) => {
     
     const [formState, dispatch] = useReducer(formReducer,INITIAL_STATE)
+
+    const setEmptyForm = (emptyPost: Post) => {
+        dispatch({ type: 'emptyPost', payload: {emptyPost}})
+    }
 
     const setTypeForm = (type: string) => {
         dispatch({ type: 'addTypePost', payload: {type}})
@@ -57,13 +61,14 @@ export const FormProvider = ({children}: props) => {
     return (
         <FormContext.Provider value={{
             formState,
+            setEmptyForm,
             setDuraForm,
             setTypeForm,
             setIdForm,
             setNameForm,
             setStartDateForm,
             setEndDateForm,
-            setPositionForm
+            setPositionForm,
         }}>
             {children}
         </FormContext.Provider>
