@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { PubliCard } from './PublisCard';
-import { usePostsContext } from '../hooks/usePosts';
+import { BannersCard } from './BannersCard';
+import { usePostsContext } from '../../hooks/usePosts';
 
 const sortByPriority = (a: { position: number }, b: { position: number }) => {
     if (a.position < b.position) return -1;
@@ -10,16 +10,16 @@ const sortByPriority = (a: { position: number }, b: { position: number }) => {
     return 0;
 };
 
-export function PublisCollection({ user }: any) {
+export function BannersCollection({ user }: any) {
     const {postsState} = usePostsContext()
     const {Posts} = postsState
-    
+
     let [PriorityOrder, setPriorityOrder] = useState(Posts)
 
     useEffect(() => {
         const sortedArray = [...Posts].sort(sortByPriority);
-        const publis = sortedArray.filter((element: { type: string }) => element.type === 'img' || element.type === 'video');
-        setPriorityOrder(publis);
+        const banners = sortedArray.filter((element: { type: string }) => element.type === 'banner');
+        setPriorityOrder(banners);
     }, [Posts])
 
     return (
@@ -27,7 +27,7 @@ export function PublisCollection({ user }: any) {
 
             {
                 PriorityOrder.map((publi: any, index: any) => (
-                    <PubliCard publi={publi} key={index} user={user} />
+                    <BannersCard publi={publi} key={index} user={user} />
                 ))
             }
         </div>

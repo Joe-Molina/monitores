@@ -43,20 +43,31 @@ export async function PUT(request: Request, { params }: Params) {
     const { fecha_inicio, Fecha_Fin, position, duration } =
       await request.json();
 
+    if (duration) {
+      const updateD = updateDuration(params.id, duration);
+      return NextResponse.json(updateD);
+    }
+
     /////////////
-    const updateTime = updateDate(fecha_inicio, Fecha_Fin, params.id);
 
-    const updateDura = updateDuration(params.id, duration);
-
-    const updatePosi = asignarPositions(position, params.id);
-
-    if (updateTime) {
+    if (fecha_inicio || Fecha_Fin) {
+      const updateTime = updateDate(fecha_inicio, Fecha_Fin, params.id);
       return NextResponse.json(updateTime);
-    } else if (updateDura) {
-      return NextResponse.json(updateDura);
-    } else if (updatePosi) {
+    }
+
+    // const updateDura = updateDuration(params.id, duration);
+
+    if (position) {
+      const updatePosi = asignarPositions(position, params.id);
       return NextResponse.json(updatePosi);
     }
+
+    // if (updateTime) {
+    //   return NextResponse.json(updateTime);
+    // } else if (updateDura) {
+    // } else if (updatePosi) {
+    //   return NextResponse.json(updatePosi);
+    // }
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(

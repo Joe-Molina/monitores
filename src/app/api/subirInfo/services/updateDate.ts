@@ -15,9 +15,6 @@ export const updateDate = async (
       },
     });
 
-    console.log("fecha fin");
-    console.log(update);
-
     return update;
   } else if (fecha_inicio) {
     const update = await prisma.publicidad.update({

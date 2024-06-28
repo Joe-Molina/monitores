@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React, {useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useFormContext } from '../hooks/useForm'
 import ArchiveType from './Form/ArchiveType'
@@ -9,7 +9,17 @@ import DurationCard from './Form/DurationCard'
 import Dates from './Form/Dates'
 import { verificarArchivo } from './Form/services/verificarArchivo'
 import { usePostsContext } from '../hooks/usePosts'
-import { FormState } from '../interfaces/interfaces'
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+  } from "@/components/ui/sheet"
+
 
 const INITIAL_STATE= {
         id: 0,
@@ -21,41 +31,52 @@ const INITIAL_STATE= {
         Fecha_Fin: new Date,
 }
 
-export function Form({ data, user }: any) {
+export function Form({ user }: any) {
+
+    console.log("form");
+    console.log(user.id);
+
+    const {postsState} = usePostsContext()
+    const data = postsState.Posts
+
     const [file, setFile] = useState()
     const { formState, setEmptyForm} = useFormContext();
     const {setPost} = usePostsContext() 
     
-        const handleClick = async(event: any) => {
-            event.preventDefault(); 
+        const handleClick = async() => {
+            // event.preventDefault();
+            console.log('array de posts')
+            console.log(data)
 
             const datos = await verificarArchivo(data, user, file, formState)
-
-            console.log('datos')
-            console.log(datos)
             if(datos){
                 setPost(datos)
                 setEmptyForm(INITIAL_STATE)
             }
-
         }
 
 
     return (
-
-        <div className='dark'>
-
+        <SheetContent className='bg-neutral-950 border-neutral-800'>
+        <SheetHeader>
+        <SheetTitle>Bienvenido {user.name}</SheetTitle>
+          <SheetDescription className='text-neutral-200'>Sube una publicacion o un banner.</SheetDescription>
+        <div className='dark text-neutral-200'>
             <form className='flex flex-col p-5 gap-4' >
-                <h1 className='text-xl font-bold'>Bienvenido {user.name}</h1>
                 <ArchiveType/>
                 <ArchiveOrBanner setFile={setFile}/>  
                 <DurationCard/>
                 <Dates/>
-                <Button onClick={(e) => {handleClick(e)}}>Subir Imagen</Button>
-                <Link href='/vista' className='w-full'><Button className='w-full'>ir a vista</Button></Link>
             </form>
-
         </div >
+    </SheetHeader>
+    <SheetFooter>
+                <SheetClose asChild>
+                <Button type="submit" onClick={() => {handleClick()}}>Subir Imagen</Button>
+          </SheetClose>
+    </SheetFooter>
+  </SheetContent>
+
 
     )
 }

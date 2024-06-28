@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { PublisCollection } from './PublisCollection'
+import { PublisCollection } from './Publis/PublisCollection'
 import { Button } from '../../../components/ui/button'
-import { BannersCollection } from './BannersCollection'
+import { BannersCollection } from './Publis/BannersCollection'
 import { usePostsContext } from '../hooks/usePosts'
 function Marquee({ session }: any) {
     
@@ -12,31 +12,24 @@ function Marquee({ session }: any) {
     const {Posts} = postsState
 
     useEffect(() => {
-        setPosts(); 
-    }, []);
+        setPosts()
+    }, [])
 
-    const [pagePublis, setPagePublis] = useState(true)
 
-    const focus = 'bg-neutral-800 text-white hover:bg-neutral-900'
 
     return (
-        <div className='flex h-full w-full flex-col'>
-            <div className='flex gap-2 h-[5%] w-full'>
-                <Button className={pagePublis ? focus : ''} onClick={() => { setPagePublis(true) }}>Archivos</Button>
-                <Button className={pagePublis ? '' : focus} onClick={() => { setPagePublis(false) }}>Banners</Button>
+        <div className='flex h-full w-full flex-col '>
+            <div className='bg-neutral-950 flex items-center px-2 h-[52px] w-full border-b border-neutral-700' >
+                <p className='font-2xl font-bold'>MediaCIM Web</p>
             </div>
 
-            {pagePublis == true &&
-                <div className='bg-neutral-900 h-[95%]'>
-                    <PublisCollection user={session.user} />
+                <div className='bg-neutral-950 h-[95%] m-3 border rounded-md overflow-auto'>
+                    <h2 className='font-medium text-2xl pl-3 py-2 border-b '>Publicaciones</h2>
+                    <PublisCollection user={session.user}/>
+                    <h2 className='font-medium text-2xl pl-3 py-2 border-b '>Banners</h2>
+                    <BannersCollection user={session.user} />
                 </div>
-            }
 
-            {pagePublis == false &&  Posts.length > 0  &&
-                <div className='bg-neutral-900 h-[95%]'>
-                    <BannersCollection data={Posts} user={session.user} />
-                </div>
-            }
         </div>
     )
 }

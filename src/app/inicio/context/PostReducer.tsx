@@ -8,6 +8,9 @@ type PostAction =
     | {type: "addPosts", payload: Post[]}
     | {type: "deletePost", payload: {id: number}}
     | {type: "changeDurationPost", payload: {idd: number, newData: number}}
+    | {type: "changePositionPost", payload: {id: number, newData: number}}
+    | {type: "changeStartDatePost", payload: {id: number, newData: Date}}
+    | {type: "changeEndDatePost", payload: {id: number, newData: Date}}
 
 export const postsReducer = (state: PostState, action: PostAction): PostState => {
     
@@ -36,9 +39,34 @@ export const postsReducer = (state: PostState, action: PostAction): PostState =>
                 return {
                     ...state,
                     Posts: state.Posts.map(post => 
-                        post.id === idd ? { ...post, newData } : post
+                        post.id === idd ? { ...post, duration: newData } : post
                     ),
                 };
+
+                case "changePositionPost":
+                    return {
+                        ...state,
+                        Posts: state.Posts.map(post => 
+                            post.id === action.payload.id ? { ...post, position: action.payload.newData } : post
+                        ),
+                    };
+
+                    case "changeStartDatePost":
+                        return {
+                            ...state,
+                            Posts: state.Posts.map(post => 
+                                post.id === action.payload.id ? { ...post, fecha_inicio: action.payload.newData } : post
+                            ),
+                        };
+
+                        case "changeEndDatePost":
+                            return {
+                                ...state,
+                                Posts: state.Posts.map(post => 
+                                    post.id === action.payload.id ? { ...post, Fecha_Fin: action.payload.newData } : post
+                                ),
+                            };
+                                            
 
 
         default:

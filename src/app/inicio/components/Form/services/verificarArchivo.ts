@@ -10,8 +10,6 @@ export const verificarArchivo = async (
   file: any,
   formState: FormState
 ) => {
-  console.log(formState);
-
   const compareFillName = publis.filter(
     (publi: any) => publi.name == formState.Form.name
   );
@@ -23,6 +21,9 @@ export const verificarArchivo = async (
         " debes cambiar el nombre del archivo que quieres guardar antes de subirlo"
     );
   } else {
+    console.log("serviceSubirRegistro");
+    console.log(user.id);
+
     const data = await serviceSubirRegistro(formState.Form, user);
 
     if (file) {

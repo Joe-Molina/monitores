@@ -34,12 +34,32 @@ export const PostsProvider = ({children}: props) => {
         dispatch({ type: 'addPosts', payload: publisData})
     }
 
+    const setDuration = async(idd: number, newData: number) => {   
+        dispatch({ type: 'changeDurationPost', payload: {idd, newData}})
+    }
+
+    const setPosition = async(id: number, newData: number) => {   
+        dispatch({ type: 'changePositionPost', payload: {id, newData}})
+    }
+
+    const setStartDate = async(id: number, newData: Date) => {   
+        dispatch({ type: 'changeStartDatePost', payload: {id, newData}})
+    }
+
+    const setEndDate = async(id: number, newData: Date) => {   
+        dispatch({ type: 'changeEndDatePost', payload: {id, newData}})
+    }
+
     return (
         <PostsContext.Provider value={{
             postsState,
             setPost,
             deletePost,
-            setPosts
+            setPosts,
+            setDuration,
+            setPosition,
+            setEndDate,
+            setStartDate,
         }}>
             {children}
         </PostsContext.Provider>

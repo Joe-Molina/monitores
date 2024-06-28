@@ -8,6 +8,10 @@ export type PostContextProps = {
     setPost: (post: Post) => void,
     setPosts: () => void,
     deletePost: (id: number) => void,
+    setDuration: (idd: number, newData: number) => void,
+    setPosition: (id: number, newData: number) => void,
+    setStartDate: (id: number, newData: Date) => void,
+    setEndDate: (id: number, newData: Date) => void,
 
   };
 

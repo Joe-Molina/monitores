@@ -6,28 +6,26 @@ import { Button } from "@/components/ui/button";
 import Marquee from "./inicio/components/Marquee";
 import { FormProvider } from "./inicio/context/FormProvider";
 import { PostsProvider } from './inicio/context/PostProvider';
+import Image from 'next/image';
+import Nav from './inicio/components/Nav';
+import { usePostsContext } from './inicio/hooks/usePosts'
+import { useEffect } from 'react';
 
 export default async function Home() {
-
-  const publicidades = await prisma.publicidad.findMany()
-
   const session = await loginIsRequiredServer();
+
+    console.log('sesion')
+    console.log(session)
+
 
   return (
         <PostsProvider>
         <FormProvider>
-    <main id="app" className="relative max-h-screen h-screen p-2 gap-2">
-      <aside className="[grid-area:aside] flex-col flex overflow-y-auto rounded-lg bg-neutral-900 text-white">
-        <Form
-          //@ts-ignore
-          data={publicidades} user={session.user} />
-        <div className='flex w-full px-5 py-5'>
-          <Link href='/auditoria' className='w-full'><Button className='w-full'>Registro de Actividades</Button></Link>
-        </div>
-      </aside>
-      <main className="[grid-area:main] rounded-lg bg-neutral-900 overflow-auto">
+    <main id="app" className="relative max-h-screen h-screen">
+        <Nav session={session.user} />
+      <section className="[grid-area:main] rounded-lg bg-neutral-900 overflow-auto">
         <Marquee session={session} />
-      </main>
+      </section>
     </main>
           </FormProvider>
           </PostsProvider>

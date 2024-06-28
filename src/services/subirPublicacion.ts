@@ -25,6 +25,9 @@ export const serviceSubirRegistro = async (data: any, user: any) => {
   //accion (subio flayer)
   //descripcion (id tal, imagen tal)
 
+  console.log("serviceSubirRegistro");
+  console.log(user.id);
+
   const resAud = await fetch("/api/auditoria", {
     method: "POST",
     body: JSON.stringify({
@@ -37,7 +40,5 @@ export const serviceSubirRegistro = async (data: any, user: any) => {
       "Content-Type": "application/json",
     },
   });
-
-  const newAuditoria = await resAud.json();
   return newRegistro;
 };
