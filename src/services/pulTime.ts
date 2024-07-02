@@ -5,6 +5,7 @@ export const updateEndTime = async (
   oldFecha: any,
   name: any
 ) => {
+  console.log({ data, id, user, oldFecha, name });
   await fetch("/api/auditoria", {
     method: "POST",
     body: JSON.stringify({
@@ -28,7 +29,7 @@ export const updateEndTime = async (
 
   const datos = await res.json();
   if (datos) {
-    // location.reload()
+    return datos;
   }
 };
 
@@ -62,6 +63,6 @@ export const updateInitialTime = async (
 
   const datos = await res.json();
   if (datos) {
-    // location.reload()
+    return datos;
   }
 };

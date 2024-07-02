@@ -32,10 +32,6 @@ const INITIAL_STATE= {
 }
 
 export function Form({ user }: any) {
-
-    console.log("form");
-    console.log(user.id);
-
     const {postsState} = usePostsContext()
     const data = postsState.Posts
 

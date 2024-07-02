@@ -1,11 +1,11 @@
 import { prisma } from "../../../../libs/prisma";
 import { NextResponse } from "next/server";
 import { asignarPositions } from "../services/asignarPosition";
-import { updateDate } from "../services/updateDate";
+import { updateEndDate, updateStartDate } from "../services/updateDate";
 import { updateDuration } from "../services/updateDuration";
 
 interface Params {
-  params: { id: string };
+  params: { id: number };
 }
 
 export async function DELETE(request: Request, { params }: Params) {
@@ -43,31 +43,17 @@ export async function PUT(request: Request, { params }: Params) {
     const { fecha_inicio, Fecha_Fin, position, duration } =
       await request.json();
 
-    if (duration) {
-      const updateD = updateDuration(params.id, duration);
-      return NextResponse.json(updateD);
-    }
+    const newDuration = await updateDuration(duration, Number(params.id));
+    const newEndDate = await updateEndDate(Fecha_Fin, Number(params.id));
+    const newStartDate = await updateStartDate(fecha_inicio, Number(params.id));
+    const newPositions = await asignarPositions(position, Number(params.id));
 
-    /////////////
-
-    if (fecha_inicio || Fecha_Fin) {
-      const updateTime = updateDate(fecha_inicio, Fecha_Fin, params.id);
-      return NextResponse.json(updateTime);
-    }
-
-    // const updateDura = updateDuration(params.id, duration);
-
-    if (position) {
-      const updatePosi = asignarPositions(position, params.id);
-      return NextResponse.json(updatePosi);
-    }
-
-    // if (updateTime) {
-    //   return NextResponse.json(updateTime);
-    // } else if (updateDura) {
-    // } else if (updatePosi) {
-    //   return NextResponse.json(updatePosi);
-    // }
+    return NextResponse.json({
+      newDuration,
+      newEndDate,
+      newPositions,
+      newStartDate,
+    });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(

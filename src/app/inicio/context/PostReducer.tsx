@@ -46,12 +46,10 @@ export const postsReducer = (state: PostState, action: PostAction): PostState =>
                 case "changePositionPost":
                     return {
                         ...state,
-                        Posts: state.Posts.map(post => 
-                            post.id === action.payload.id ? { ...post, position: action.payload.newData } : post
-                        ),
+                        Posts: state.Posts.map(post =>  post.id === action.payload.id ? { ...post, position: action.payload.newData } : post)
                     };
-
-                    case "changeStartDatePost":
+                    
+                        case "changeStartDatePost":
                         return {
                             ...state,
                             Posts: state.Posts.map(post => 
@@ -63,7 +61,7 @@ export const postsReducer = (state: PostState, action: PostAction): PostState =>
                             return {
                                 ...state,
                                 Posts: state.Posts.map(post => 
-                                    post.id === action.payload.id ? { ...post, Fecha_Fin: action.payload.newData } : post
+                                    post.id === action.payload.id ? { ...post, Fecha_Fin: action.payload.newData} : post
                                 ),
                             };
                                             

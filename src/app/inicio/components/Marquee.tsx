@@ -18,8 +18,9 @@ function Marquee({ session }: any) {
 
 
     return (
+        <section className="[grid-area:main]  bg-neutral-900 overflow-auto">
         <div className='flex h-full w-full flex-col '>
-            <div className='bg-neutral-950 flex items-center px-2 h-[52px] w-full border-b border-neutral-700' >
+            <div className='bg-neutral-950 flex items-center px-2 h-[53px] w-full border-b border-neutral-700' >
                 <p className='font-2xl font-bold'>MediaCIM Web</p>
             </div>
 
@@ -31,6 +32,7 @@ function Marquee({ session }: any) {
                 </div>
 
         </div>
+        </section>
     )
 }
 

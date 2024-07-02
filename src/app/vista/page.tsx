@@ -26,9 +26,10 @@ async function Vista() {
 
     })
 
-    //@ts-ignore
     const ActivePublis = publis.filter(publi => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
     const ActiveBanners = banners.filter(publi => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
+
+    console.log(ActivePublis)
 
     const sortByPriority = (a: { position: number }, b: { position: number }) => {
         if (a.position < b.position) return -1;

@@ -9,16 +9,17 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-import { Calendar } from "@/components/ui/calendar"
+
 import Image from 'next/image'
 import { updateEndTime, updateInitialTime } from '@/services/pulTime'
 import { deletePubli } from '@/services/deletePubli'
 import { useState } from 'react'
 import { usePostsContext } from '../../hooks/usePosts'
 import { toast } from 'sonner'
+import Dates from './PublisCard/components/Dates'
 
 export const PubliCard = ({ publi, user }: any) => {
-    const {deletePost,setDuration, setPosition, setEndDate, setStartDate} = usePostsContext()
+    const {deletePost,setDuration, setPosition} = usePostsContext()
 
     const handleClickDetele = async() => {
 
@@ -28,14 +29,11 @@ export const PubliCard = ({ publi, user }: any) => {
         if (datos) {
             deletePost(publi.id);
             toast(`${publi.name} ha sido borrado`, {
-                description: date.toLocaleString(),
+                description: date.toLocaleString()
               })
             } 
 
     }
-    const fechaInicio = publi.fecha_inicio.slice(0, 10)
-
-    const fechaFin = publi.Fecha_Fin.slice(0, 10)
 
     let [positionn, setPositionn] = useState(0)
     let [duration, setDurationn] = useState(0)
@@ -67,7 +65,7 @@ export const PubliCard = ({ publi, user }: any) => {
                                   await fetch('/api/auditoria', {
                                         method: "POST",
                                         body: JSON.stringify({
-                                            id_usuario: Number(user.id),
+                                            id_usuario: user.id,
                                             accion: user.name,
                                             descripcion: `se cambio de posicion archivo ${publi.name} de ${publi.position} a ${positionn}`,
                                             tipo: "cambio de posicion"
@@ -85,9 +83,20 @@ export const PubliCard = ({ publi, user }: any) => {
                                             "Content-Type": "application/json",
                                         },
                                     });
+
                                     const datos = await res.json();
+
                                     if (datos) {
-                                        setPosition(publi.id, positionn)
+                                        console.log(datos)
+                                        if(datos.newPositions.publi2){
+                                            console.log(datos)
+                                            setPosition(datos.newPositions.publi1.id, datos.newPositions.publi1.position)
+                                            setPosition(datos.newPositions.publi2.id, datos.newPositions.publi2.position)
+
+                                        } else {
+                                            setPosition(publi.id, positionn)
+                                        }
+                                        
                                     }
 
 
@@ -109,7 +118,7 @@ export const PubliCard = ({ publi, user }: any) => {
                                     await fetch('/api/auditoria', {
                                         method: "POST",
                                         body: JSON.stringify({
-                                            id_usuario: Number(user.id),
+                                            id_usuario: user.id,
                                             accion: user.name,
                                             descripcion: `cambio de duracion al archivo ${publi.name} de ${publi.duration / 1000} segundos a ${duration / 1000} segundos`,
                                             tipo: "cambio de duracion"
@@ -150,33 +159,7 @@ export const PubliCard = ({ publi, user }: any) => {
                         <button onClick={()=> {handleClickDetele(); }} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></div></button>
                     </div>
                 </div>
-                <div className='flex gap-3 justify-between'>
-                    {/* inicial time  */}
-                    <Popover>
-                        <div className='flex items-center gap-1 text-sm font-medium'> <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/up.svg' alt='' width={20} height={20} /></div></PopoverTrigger>{fechaInicio} </div>
-                        <PopoverContent>
-                            <Calendar
-                                mode="single"
-                                // selected={date}
-                                onSelect={(e) => { updateInitialTime(e, publi.id, user, fechaInicio, publi.name); setStartDate(publi.id, e?.toISOString())  }}
-                                className="rounded-md flex justify-center border"
-                            />
-                        </PopoverContent>
-                    </Popover>
-                    
-                    {/* end time  */}
-                    <Popover>
-                        <div className='flex items-center gap-1 text-sm font-medium'><PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm '><Image src='/iconos/down.svg' alt='' width={20} height={20} /></div></PopoverTrigger>{fechaFin}</div>
-                        <PopoverContent>
-                            <Calendar
-                                mode="single"
-                                // selected={date}
-                                onSelect={(e) => { updateEndTime(e, publi.id, user, fechaFin, publi.name); setEndDate(publi.id, e?.toISOString()) }}
-                                className="rounded-md flex justify-center border"
-                            />
-                        </PopoverContent>
-                    </Popover>
-                </div>
+                    <Dates id={publi.id} user={user} name={publi.name} fechaInicio={publi.fecha_inicio} fechaFin={publi.Fecha_Fin}/>
             </div>
         </div >
     )

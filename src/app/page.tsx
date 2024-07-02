@@ -13,19 +13,12 @@ import { useEffect } from 'react';
 
 export default async function Home() {
   const session = await loginIsRequiredServer();
-
-    console.log('sesion')
-    console.log(session)
-
-
   return (
         <PostsProvider>
         <FormProvider>
-    <main id="app" className="relative max-h-screen h-screen">
+    <main id="app" className="max-h-screen h-screen">
         <Nav session={session.user} />
-      <section className="[grid-area:main] rounded-lg bg-neutral-900 overflow-auto">
         <Marquee session={session} />
-      </section>
     </main>
           </FormProvider>
           </PostsProvider>
