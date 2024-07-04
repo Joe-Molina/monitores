@@ -1,5 +1,5 @@
 'use client'
-
+import React, { useRef } from 'react';
 import { verificarEstadoActividad } from '@/app/inicio/services/verificarActividad'
 import { Switch } from "@/components/ui/switch"
 
@@ -17,6 +17,9 @@ import { useState } from 'react'
 import { usePostsContext } from '../../hooks/usePosts'
 import { toast } from 'sonner'
 import Dates from './PublisCard/components/Dates'
+import { postDuration, postPosition } from './PublisCard/services/postInfo';
+import ImgOrVideo from './PublisCard/components/ImgOrVideo';
+import EditPopover from './PublisCard/components/EditPopover';
 
 export const PubliCard = ({ publi, user }: any) => {
     const {deletePost,setDuration, setPosition} = usePostsContext()
@@ -35,118 +38,28 @@ export const PubliCard = ({ publi, user }: any) => {
 
     }
 
-    let [positionn, setPositionn] = useState(0)
+    const handleClickEdit = () => {
+        postPosition(publi, position, setPosition)
+        postDuration(publi, duration, setDuration) 
+    }
+
+    let [position, setPositionn] = useState(0)
     let [duration, setDurationn] = useState(0)
     return (
         <div className='shadow-lg flex flex-col justify-between max-w-96 cover rounded-sm overflow-hidden w-72  bg-neutral-900  border border-neutral-600'>
-            <div className='relative h-56 mx-auto bg-black overflow-hidden flex'>
-
-                {
-                    (publi.type !== "video") ?
-                        <div className='h-56 w-40 mx-auto bg-black overflow-hidden flex'>
-                            <a href={'/fotos/' + publi.name} target='_blank'>
-                                <Image src={'/fotos/' + publi.name} alt="" className='mx-auto h-full' fill />
-                            </a>
-                        </div>
-                        :
-                        <video src={'/fotos/' + publi.name} controls ></video>
-                }
-            </div>
+                <ImgOrVideo publi={publi}/>
+           
                 <p className='p-1 bg-neutral-950/75  px-2  border-y border-neutral-600'>{publi.name}</p>
+
+
             <div className='p-1'>
                 <div className='flex my-1'>
                     <div className='flex gap-2 items-center'>
                         {/* position */}
-                        <Popover>
-                            <PopoverTrigger><div className='bg-neutral-900/70  border border-neutral-700 w-10 h-7 flex justify-center items-center rounded-sm'>{publi.position > 0? publi.position + ".º": '-'}</div></PopoverTrigger>
-                            <PopoverContent className='w-20'>
-                                <form className='w-10' onSubmit={async (e) => {
-                                    e.preventDefault()
-                                  await fetch('/api/auditoria', {
-                                        method: "POST",
-                                        body: JSON.stringify({
-                                            id_usuario: user.id,
-                                            accion: user.name,
-                                            descripcion: `se cambio de posicion archivo ${publi.name} de ${publi.position} a ${positionn}`,
-                                            tipo: "cambio de posicion"
-                                        }
-                                        ),
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                    })
-
-                                    const res = await fetch(`/api/subirInfo/${publi.id}`, {
-                                        method: "PUT",
-                                        body: JSON.stringify({ position: positionn }),
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                    });
-
-                                    const datos = await res.json();
-
-                                    if (datos) {
-                                        console.log(datos)
-                                        if(datos.newPositions.publi2){
-                                            console.log(datos)
-                                            setPosition(datos.newPositions.publi1.id, datos.newPositions.publi1.position)
-                                            setPosition(datos.newPositions.publi2.id, datos.newPositions.publi2.position)
-
-                                        } else {
-                                            setPosition(publi.id, positionn)
-                                        }
-                                        
-                                    }
-
-
-                                }}>
-                                    <input type="Number" className='w-10' required onChange={(e) => { const number = Number(e.target.value); setPositionn(number) }} />
-                                    <input type="submit" value="" className='hidden' />
-                                </form>
-                            </PopoverContent>
-                        </Popover>
-
+                        <div  className='bg-neutral-900/70  border border-neutral-700 w-10 h-7 flex justify-center items-center rounded-sm'>{publi.position > 0? publi.position + ".º": '-'}</div>
+                        
                         {/* duration  */}
-                        <Popover>
-                            <PopoverTrigger><p className='bg-neutral-900/70  border border-neutral-700 w-9 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p></PopoverTrigger>
-                            <PopoverContent className='w-16'>
-                                <form className='' onSubmit={async (e) => {
-                                    e.preventDefault()
-
-
-                                    await fetch('/api/auditoria', {
-                                        method: "POST",
-                                        body: JSON.stringify({
-                                            id_usuario: user.id,
-                                            accion: user.name,
-                                            descripcion: `cambio de duracion al archivo ${publi.name} de ${publi.duration / 1000} segundos a ${duration / 1000} segundos`,
-                                            tipo: "cambio de duracion"
-                                        }
-                                        ),
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                    })
-
-                                    const res = await fetch(`/api/subirInfo/${publi.id}`, {
-                                        method: "PUT",
-                                        body: JSON.stringify({ duration }),
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                    });
-
-                                    const datos = await res.json();
-                                    if (datos) {
-                                        setDuration(publi.id ,duration)
-                                    }
-                                }}>
-                                    <input type="Number" className='w-10' min="1" required onChange={(e) => { const number = Number(e.target.value); setDurationn(number * 1000) }}  />
-                                    <input type="submit" value="" className='hidden'/>
-                                </form>
-                            </PopoverContent>
-                        </Popover>
+                        <p className='bg-neutral-900/70  border border-neutral-700 w-9 h-7 flex justify-center items-center rounded-sm'>{publi.duration / 1000 + "s"}</p>
 
                         {/* ico img/video  */}
                         {publi.type == 'img' ? <div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/img.svg' alt='' width={20} height={20} /></div> : <div className='bg-neutral-900/70 border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm'><Image src='/iconos/video.svg' alt='' width={20} height={20} /></div>}
@@ -156,7 +69,8 @@ export const PubliCard = ({ publi, user }: any) => {
                     </div>
                     {/* delete publi  */}
                     <div className='w-full flex justify-end gap-1 items-center'>
-                        <button onClick={()=> {handleClickDetele(); }} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></div></button>
+                        <EditPopover/>
+                        <button  className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 transition' onClick={()=> {handleClickDetele(); }} ><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></button>
                     </div>
                 </div>
                     <Dates id={publi.id} user={user} name={publi.name} fechaInicio={publi.fecha_inicio} fechaFin={publi.Fecha_Fin}/>

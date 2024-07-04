@@ -21,20 +21,24 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    console.log("llegamo hasta aca");
 
-    console.log('llegamo hasta aca')
+    const { name, type, duration, fecha_inicio, Fecha_Fin } =
+      await request.json();
 
-    const { name, type, duration, fecha_inicio, Fecha_Fin } = await request.json();
-
-    console.log(name, type, duration)
+    console.log(name, type, duration);
 
     const newPublicidad = await prisma.publicidad.create({
       data: {
-        name, type, duration, fecha_inicio, Fecha_Fin
-      }
-    })
-    
-    console.log('pero no hasta aca?')
+        name,
+        type,
+        duration,
+        fecha_inicio,
+        Fecha_Fin,
+      },
+    });
+
+    console.log("pero no hasta aca?");
 
     return NextResponse.json(newPublicidad);
   } catch (error) {}

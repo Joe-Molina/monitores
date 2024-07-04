@@ -2,36 +2,41 @@
 
 import React, { useEffect, useState } from 'react'
 import { PublisCollection } from './Publis/PublisCollection'
-import { Button } from '../../../components/ui/button'
 import { BannersCollection } from './Publis/BannersCollection'
 import { usePostsContext } from '../hooks/usePosts'
+import { getPublis } from '../services/Publicidades'
+
 function Marquee({ session }: any) {
-    
-    
-    const {postsState, setPost, setPosts} = usePostsContext()
-    const {Posts} = postsState
+
+    const { postsState, setPost, setPosts } = usePostsContext()
 
     useEffect(() => {
-        setPosts()
+
+        const publis = async () => {
+            setPosts(await getPublis('http://10.10.2.163:3000'))
+        }
+
+        publis()
+
     }, [])
 
 
 
     return (
         <section className="[grid-area:main]  bg-neutral-900 overflow-auto">
-        <div className='flex h-full w-full flex-col '>
-            <div className='bg-neutral-950 flex items-center px-2 h-[53px] w-full border-b border-neutral-700' >
-                <p className='font-2xl font-bold'>MediaCIM Web</p>
-            </div>
+            <div className='flex h-full w-full flex-col '>
+                <div className='bg-neutral-950 flex items-center px-2 h-[53px] w-full border-b border-neutral-700' >
+                    <p className='font-2xl font-bold'>MediaCIM Web</p>
+                </div>
 
                 <div className='bg-neutral-950 h-[95%] m-3 border rounded-md overflow-auto'>
                     <h2 className='font-medium text-2xl pl-3 py-2 border-b '>Publicaciones</h2>
-                    <PublisCollection user={session.user}/>
+                    <PublisCollection user={session.user} />
                     <h2 className='font-medium text-2xl pl-3 py-2 border-b '>Banners</h2>
                     <BannersCollection user={session.user} />
                 </div>
 
-        </div>
+            </div>
         </section>
     )
 }
