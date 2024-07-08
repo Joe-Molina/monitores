@@ -14,37 +14,143 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { editPost } from '../services/postEdit'
+import { MONITOR_IP } from '@/app/inicio/services/EndPoints'
+import { usePostsContext } from '@/app/inicio/hooks/usePosts'
 
-export default function EditPopover() {
+export default function EditPopover({ id }: any) {
+  const { setDuration, setPosition, setStartDate, setEndDate } = usePostsContext()
+
+  console.log(id)
+
+  const [edit, setEdit] = React.useState({
+    position: 0,
+    duration: 0,
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
+  });
+
+  const handleClick = async () => {
+
+
+    const data = await editPost(edit, MONITOR_IP, id)
+
+    setDuration(id, data.newDuration)
+    if (data.newPositions != 'Position vacía') {
+      setPosition(data.newPositions.publi1.id, data.newPositions.publi1.position)
+      if (data.newPositions.publi2) {
+        setPosition(data.newPositions.publi2.id, data.newPositions.publi2.position)
+      }
+
+    }
+    console.log(data)
+
+  }
+
+
+
   return (
-      <Dialog>
+    <Dialog>
       <DialogTrigger asChild>
-      <Button  className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 p-0 flex justify-center items-center rounded-sm hover:bg-blue-600/10 transition' ><Image src='/iconos/edit.svg' alt='' width={20} height={20} /></Button>
+        <Button className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 p-0 flex justify-center items-center rounded-sm hover:bg-blue-600/10 transition' ><Image src='/iconos/edit.svg' alt='' width={20} height={20} /></Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Editar Publicacion</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Aca puedes cambiar la fecha, posicion y duracion de la publicacion.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+        <div className="flex flex-wrap justify-evenly gap-4 py-4">
+
+          <div className=" items-center gap-4 w-1/3">
+            <Label htmlFor="duracion" className="text-right">
+              Duracion
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input id="duracion" type="number" placeholder="segundos..." className="col-span-2 text-sm" onChange={(e) => {
+              if (e) {
+                setEdit({ ...edit, duration: Number(e.target.value) * 1000 });
+                console.log(edit)
+              }
+            }} />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+
+          <div className=" items-center gap-4 w-1/3">
+            <Label htmlFor="Posicion" className="text-right">
+              Posicion
             </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+            <Input id="Posicion" type="number" className="text-white" onChange={(e) => {
+              if (e) {
+                setEdit({ ...edit, position: Number(e.target.value) });
+                console.log(edit)
+              }
+            }} />
           </div>
+
+          <div className="items-center gap-4 w-1/3">
+            <Popover>
+              <div className='flex items-center gap-1 text-sm font-medium'>
+                <PopoverTrigger>
+                  <div className='flex items-center'><Label htmlFor="Fecha_Fin" className="text-right mr-1">
+                    Fecha Inicio
+                  </Label><Image src='/iconos/up.svg' alt='' width={20} height={20} />
+                  </div>
+                </PopoverTrigger>
+              </div>
+              <PopoverContent>
+                <Calendar
+                  mode="single"
+                  // selected={date}
+                  onSelect={(e) => {
+                    if (e) {
+                      setEdit({ ...edit, fechaInicio: e });
+                      console.log(edit)
+                    }
+                  }}
+                  className="rounded-md flex justify-center border"
+                />
+              </PopoverContent>
+            </Popover>
+            <div className='border py-2 px-1 rounded-md'>
+              {edit.fechaInicio.toISOString().slice(0, 10)}
+            </div>
+          </div>
+
+          <div className="items-center gap-4 w-1/3">
+            <Popover>
+              <div className='flex items-center gap-1 text-sm font-medium'>
+                <PopoverTrigger>
+                  <div className='flex items-center'><Label htmlFor="Fecha_Fin" className="text-right mr-1">
+                    Fecha Fin
+                  </Label><Image src='/iconos/down.svg' alt='' width={20} height={20} />
+                  </div>
+                </PopoverTrigger>
+              </div>
+              <PopoverContent>
+                <Calendar
+                  mode="single"
+                  // selected={date}
+                  onSelect={(e) => {
+                    if (e) {
+                      setEdit({ ...edit, fechaFin: e });
+                      console.log(edit)
+                    }
+                  }}
+                  className="rounded-md flex justify-center border"
+                />
+              </PopoverContent>
+            </Popover>
+            <div className='border py-2 px-1 rounded-md'>
+              {edit.fechaInicio.toISOString().slice(0, 10)}
+            </div>
+          </div>
+
         </div>
         <DialogFooter>
           <DialogClose asChild>
-          <Button type="submit">Save changes</Button>
+            <Button type="submit" onClick={handleClick}>Guardar</Button>
           </DialogClose>
 
         </DialogFooter>
