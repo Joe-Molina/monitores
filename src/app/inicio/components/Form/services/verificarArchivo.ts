@@ -2,19 +2,17 @@ import { FormState } from "@/app/inicio/interfaces/interfaces";
 import {
   serviceSubirArchivoACarpeta,
   serviceSubirRegistro,
-} from "@/services/subirPublicacion";
+} from "@/app/inicio/services/subirPublicacion";
 
 export const verificarArchivo = async (
   publis: any,
-  user: any,
   file: any,
-  formState: FormState
+  formState: FormState,
+  IpMonitor: string
 ) => {
-
   const compareFillName = publis.filter(
     (publi: any) => publi.name == formState.Form.name
   );
-
   if (compareFillName.length > 0) {
     return alert(
       "ya hay un documento llamado " +
@@ -22,12 +20,7 @@ export const verificarArchivo = async (
         " debes cambiar el nombre del archivo que quieres guardar antes de subirlo"
     );
   } else {
-    const data = await serviceSubirRegistro(formState.Form, user, 'http://10.10.2.163:3000');
-
-    if (file) {
-      await serviceSubirArchivoACarpeta(file, 'http://10.10.2.163:3000');
-
-      return data;
-    }
+    const data = await serviceSubirRegistro(formState.Form, IpMonitor);
+    return data;
   }
 };

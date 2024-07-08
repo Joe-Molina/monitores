@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Imga from './Imagen'
 import { verificarEstadoActividad } from '../inicio/services/verificarActividad'
-import Image from 'next/image'
-import { prisma } from '../../libs/prisma'
+
 import NoImage from './NoImage'
 import { Banner } from './Banner'
+import { getPosts } from '../inicio/services/Posts'
+import { MONITOR_IP } from '../inicio/services/EndPoints'
 
 async function Vista() {
 
-    const publicidades = await prisma.publicidad.findMany()
+    const publicidades = await getPosts(MONITOR_IP)
 
-    const publis = publicidades.filter((element: { type: string }) => {
+    console.log(publicidades)
+
+    const publis = await publicidades.filter((element: { type: string }) => {
 
         if (element.type == "img" ||  element.type == "video") {
             return true
         }
     })
 
-    const banners = publicidades.filter((element: { type: string }) => {
+    const banners = await publicidades.filter((element: { type: string }) => {
 
         if (element.type == "banner") {
 

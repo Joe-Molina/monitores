@@ -1,6 +1,5 @@
 'use client'
-import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useFormContext } from '../hooks/useForm'
 import ArchiveType from './Form/ArchiveType'
@@ -10,15 +9,15 @@ import Dates from './Form/Dates'
 import { verificarArchivo } from './Form/services/verificarArchivo'
 import { usePostsContext } from '../hooks/usePosts'
 import {
-    Sheet,
+
     SheetClose,
     SheetContent,
     SheetDescription,
     SheetFooter,
     SheetHeader,
-    SheetTitle,
-    SheetTrigger,
 } from "@/components/ui/sheet"
+import { serviceSubirArchivoACarpeta } from '../services/subirPublicacion'
+import { MONITOR_IP } from '../services/EndPoints'
 
 
 const INITIAL_STATE = {
@@ -31,24 +30,29 @@ const INITIAL_STATE = {
     Fecha_Fin: new Date,
 }
 
-export function Form({ user }: any) {
+export function Form() {
     const { postsState } = usePostsContext()
     const data = postsState.Posts
 
     const [file, setFile] = useState()
     const { formState, setEmptyForm } = useFormContext();
     const { setPost } = usePostsContext()
+  
 
     const handleClick = async () => {
+        console.log(file)
 
-
-        const datos = await verificarArchivo(data, user, file, formState)
-
-
-
+        
+        
+        const datos = await verificarArchivo(data, file, formState, MONITOR_IP)
+        
         if (datos) {
             setPost(datos)
-            setEmptyForm(INITIAL_STATE)
+            setEmptyForm(INITIAL_STATE) 
+        }
+        if(file){
+            await serviceSubirArchivoACarpeta(file, MONITOR_IP);
+
         }
     }
 
@@ -56,12 +60,11 @@ export function Form({ user }: any) {
     return (
         <SheetContent className='bg-neutral-950 border-neutral-800'>
             <SheetHeader>
-                <SheetTitle>Bienvenido {user.name}</SheetTitle>
                 <SheetDescription className='text-neutral-200'>Sube una publicacion o un banner.</SheetDescription>
                 <div className='dark text-neutral-200'>
                     <form className='flex flex-col p-5 gap-4' >
                         <ArchiveType />
-                        <ArchiveOrBanner setFile={setFile} />
+                        <ArchiveOrBanner setFile={setFile}  />
                         <DurationCard />
                         <Dates />
                     </form>

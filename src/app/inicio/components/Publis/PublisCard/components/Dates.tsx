@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { usePostsContext } from '@/app/inicio/hooks/usePosts'
-import { updateEndTime, updateInitialTime } from '../../../../../../services/pulTime'
+import { updateEndTime, updateInitialTime } from '../../../../services/pulTime'
 import Image from 'next/image'
 
 

@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/popover"
 
 import { Calendar } from "@/components/ui/calendar"
-import { updateEndTime, updateInitialTime } from '@/services/pulTime'
-import { deletePubli } from '@/services/deletePubli'
+import { updateEndTime, updateInitialTime } from '@/app/inicio/services/pulTime'
 import { useState } from 'react'
 import Image from 'next/image'
 import { usePostsContext } from '../../hooks/usePosts'
 import { toast } from 'sonner'
+import { serviceDeletePost } from '../../services/Posts'
 
 
 
@@ -28,7 +28,7 @@ export const BannersCard = ({ publi, user }: any) => {
 
         const date = new Date
         
-        const datos = await deletePubli(publi.id, user, publi)
+        const datos = await serviceDeletePost(publi.id)
         if (datos) {
             deletePost(publi.id);
             toast(`${publi.name} ha sido borrado`, {
@@ -137,7 +137,7 @@ export const BannersCard = ({ publi, user }: any) => {
                         {verificarEstadoActividad(publi.fecha_inicio, publi.Fecha_Fin) ? <Switch checked={true} id="airplane-mode" className='border border-green-800 bg-green-400' /> : <Switch checked={false} id="airplane-mode" className='border border-red-800' />}
                     </div>
                     <div className='w-full flex justify-end gap-1 items-center'>
-                        <button onClick={() => deletePubli(publi.id, user, publi)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></div></button>
+                        <button onClick={() => serviceDeletePost(publi.id)} ><div className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 hover:scale-105 transition'><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></div></button>
                     </div>
                 </div>
                 <div className='flex gap-3 justify-between'>
@@ -147,7 +147,7 @@ export const BannersCard = ({ publi, user }: any) => {
                             <Calendar
                                 mode="single"
                                 // selected={date}
-                                onSelect={(e) => { updateInitialTime(e, publi.id, user, fechaInicio, publi.name) }}
+                                onSelect={(e) => { updateInitialTime(e, publi.id) }}
                                 className="rounded-md flex justify-center border"
                             />
                         </PopoverContent>
@@ -159,7 +159,7 @@ export const BannersCard = ({ publi, user }: any) => {
                             <Calendar
                                 mode="single"
                                 // selected={date}
-                                onSelect={(e) => { updateEndTime(e, publi.id, user, fechaFin, publi.name) }}
+                                onSelect={(e) => { updateEndTime(e, publi.id) }}
                                 className="rounded-md flex justify-center border"
                             />
                         </PopoverContent>

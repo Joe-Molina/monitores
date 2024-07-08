@@ -1,50 +1,35 @@
 'use client'
-import React, { useRef } from 'react';
 import { verificarEstadoActividad } from '@/app/inicio/services/verificarActividad'
 import { Switch } from "@/components/ui/switch"
-
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-
-
 import Image from 'next/image'
-import { updateEndTime, updateInitialTime } from '@/services/pulTime'
-import { deletePubli } from '@/services/deletePubli'
 import { useState } from 'react'
 import { usePostsContext } from '../../hooks/usePosts'
 import { toast } from 'sonner'
 import Dates from './PublisCard/components/Dates'
 import { postDuration, postPosition } from './PublisCard/services/postInfo';
-import ImgOrVideo from './PublisCard/components/ImgOrVideo';
+import {ImgOrVideo} from './PublisCard/components/ImgOrVideo';
 import EditPopover from './PublisCard/components/EditPopover';
+import { serviceDeletePost } from '../../services/Posts';
+import { MONITOR_IP } from '../../services/EndPoints'
 
 export const PubliCard = ({ publi, user }: any) => {
     const {deletePost,setDuration, setPosition} = usePostsContext()
 
     const handleClickDetele = async() => {
-
         const date = new Date
-        
-        const datos = await deletePubli(publi.id, user, publi)
+        const datos = await serviceDeletePost(MONITOR_IP,publi.id)
         if (datos) {
             deletePost(publi.id);
             toast(`${publi.name} ha sido borrado`, {
                 description: date.toLocaleString()
               })
             } 
-
     }
-
-    const handleClickEdit = () => {
-        postPosition(publi, position, setPosition)
-        postDuration(publi, duration, setDuration) 
-    }
-
-    let [position, setPositionn] = useState(0)
-    let [duration, setDurationn] = useState(0)
+    // puede ayudar a controlar el estado globarl no borrar
+    // const handleClickEdit = () => {
+    // postPosition(publi, position, setPosition)
+    //     postDuration(publi, duration, setDuration) 
+    // }
     return (
         <div className='shadow-lg flex flex-col justify-between max-w-96 cover rounded-sm overflow-hidden w-72  bg-neutral-900  border border-neutral-600'>
                 <ImgOrVideo publi={publi}/>

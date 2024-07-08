@@ -10,7 +10,7 @@ const sortByPriority = (a: { position: number }, b: { position: number }) => {
     return 0;
 };
 
-export function PublisCollection({ user }: any) {
+export function PublisCollection() {
     const {postsState} = usePostsContext()
     const {Posts} = postsState
     
@@ -23,11 +23,11 @@ export function PublisCollection({ user }: any) {
     }, [Posts])
 
     return (
-        <div className='p-3 flex gap-4 justify-stretch flex-wrap overflow-auto text-white border-b'>
+        <div className=' p-3 flex gap-4 justify-center  lg:justify-stretch items-center flex-wrap overflow-auto text-white border-b'>
 
             {
                 PriorityOrder.map((publi: any, index: any) => (
-                    <PubliCard publi={publi} key={index} user={user} />
+                    <PubliCard publi={publi} key={index}  />
                 ))
             }
         </div>

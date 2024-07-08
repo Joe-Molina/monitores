@@ -58,14 +58,18 @@
   }
 }
 
-#app {
-  display: grid;
-  grid-template-areas:
-    "aside main";
-  grid-template-columns: 50px 1fr;
-  grid-template-rows: 1fr auto;
-  background-color: black;
+@media (min-width: 1250px) {
+  #app {
+    display: grid;
+    grid-template-areas:
+      "aside main";
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: 1fr auto;
+    background-color: black;
+  }
 }
+
+
 
 .marquee {
   line-height: 50px;

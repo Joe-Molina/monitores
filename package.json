@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
-    "@prisma/client": "^5.12.1",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
@@ -21,15 +20,12 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
-    "bcrypt": "^5.1.1",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "cors": "^2.8.5",
     "lucide-react": "^0.373.0",
     "next": "14.2.2",
-    "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
-    "prisma": "^5.14.0",
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
@@ -42,8 +38,6 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/cors": "^2.8.17",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

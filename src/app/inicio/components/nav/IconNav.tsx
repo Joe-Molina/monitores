@@ -42,13 +42,13 @@ const Icon = ({url, alt, message}:any) => {
   )
 }
 
-export default function IconNavFunction({url, alt, message, session}:any) {
+export default function IconNavFunction({url, alt, message}:any) {
 
 
   return (
     <Sheet>
-  <SheetTrigger><Icon url={url} alt={alt} message={message}/></SheetTrigger>
-        <Form user={session} />
+  <SheetTrigger ><Icon url={url} alt={alt} message={message}/></SheetTrigger>
+        <Form  />
     </Sheet>
     
   )
