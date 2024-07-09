@@ -15,7 +15,7 @@ async function Vista() {
 
     const publis = await publicidades.filter((element: { type: string }) => {
 
-        if (element.type == "img" ||  element.type == "video") {
+        if (element.type == "img" || element.type == "video") {
             return true
         }
     })
@@ -29,8 +29,8 @@ async function Vista() {
 
     })
 
-    const ActivePublis = publis.filter(publi => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
-    const ActiveBanners = banners.filter(publi => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
+    const ActivePublis = publis.filter((publi: any) => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
+    const ActiveBanners = banners.filter((publi: any) => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
 
     console.log(ActivePublis)
 
@@ -41,22 +41,22 @@ async function Vista() {
     };
     //@ts-ignore
     const sortedArray = [...ActivePublis].sort(sortByPriority);
-        return (
-            <div className='bg-black w-screen h-screen' >
-                {ActiveBanners.length == 0?
+    return (
+        <div className='bg-black w-screen h-screen' >
+            {ActiveBanners.length == 0 ?
                 <div className={`h-[100%]`}>
-                {ActivePublis.length > 0 && <Imga data={sortedArray}/>}
-                {ActivePublis.length === 0 && <NoImage />}
+                    {ActivePublis.length > 0 && <Imga data={sortedArray} />}
+                    {ActivePublis.length === 0 && <NoImage />}
                 </div>
-            :
-            <><div className={`h-[95%]`}>
-                        {ActivePublis.length > 0 && <Imga data={sortedArray} />}
-                        {ActivePublis.length === 0 && <NoImage />}
-                    </div><div className='h-[5%] flex w-full'>
-                            <Banner data={banners} />
-                        </div></>
-                }
-            </div>       
-        )
+                :
+                <><div className={`h-[95%]`}>
+                    {ActivePublis.length > 0 && <Imga data={sortedArray} />}
+                    {ActivePublis.length === 0 && <NoImage />}
+                </div><div className='h-[5%] flex w-full'>
+                        <Banner data={banners} />
+                    </div></>
+            }
+        </div>
+    )
 }
 export default Vista

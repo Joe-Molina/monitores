@@ -11,9 +11,9 @@ const sortByPriority = (a: { position: number }, b: { position: number }) => {
 };
 
 export function PublisCollection() {
-    const {postsState} = usePostsContext()
-    const {Posts} = postsState
-    
+    const { postsState } = usePostsContext()
+    const { Posts } = postsState
+
     let [PriorityOrder, setPriorityOrder] = useState(Posts)
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export function PublisCollection() {
 
             {
                 PriorityOrder.map((publi: any, index: any) => (
-                    <PubliCard publi={publi} key={index}  />
+                    <PubliCard publi={publi} key={index} />
                 ))
             }
         </div>

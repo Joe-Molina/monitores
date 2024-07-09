@@ -2,22 +2,21 @@
 import { verificarEstadoActividad } from '@/app/inicio/services/verificarActividad'
 import { Switch } from "@/components/ui/switch"
 import Image from 'next/image'
-import { useState } from 'react'
 import { usePostsContext } from '../../hooks/usePosts'
 import { toast } from 'sonner'
 import Dates from './PublisCard/components/Dates'
-import { postDuration, postPosition } from './PublisCard/services/postInfo';
 import { ImgOrVideo } from './PublisCard/components/ImgOrVideo';
 import EditPopover from './PublisCard/components/EditPopover';
 import { serviceDeletePost } from '../../services/Posts';
-import { MONITOR_IP } from '../../services/EndPoints'
+import { useIpContext } from '../../hooks/useIp'
 
-export const PubliCard = ({ publi, user }: any) => {
-    const { deletePost, setDuration, setPosition } = usePostsContext()
+export const PubliCard = ({ publi }: any) => {
+    const { IpState } = useIpContext()
+    const { deletePost } = usePostsContext()
 
     const handleClickDetele = async () => {
         const date = new Date
-        const datos = await serviceDeletePost(MONITOR_IP, publi.id)
+        const datos = await serviceDeletePost(IpState, publi.id)
         if (datos) {
             deletePost(publi.id);
             toast(`${publi.name} ha sido borrado`, {
@@ -32,7 +31,7 @@ export const PubliCard = ({ publi, user }: any) => {
 
             <p className='p-1 bg-neutral-950/75  px-2  border-y border-neutral-600'>{publi.name}</p>
 
-            <div className='p-1'>
+            <div className=''>
                 <div className='flex my-1'>
                     <div className='flex gap-2 items-center'>
                         {/* position */}
@@ -49,11 +48,11 @@ export const PubliCard = ({ publi, user }: any) => {
                     </div>
                     {/* delete publi  */}
                     <div className='w-full flex justify-end gap-1 items-center'>
-                        <EditPopover id={publi.id} />
+                        <EditPopover id={publi.id} ip={IpState} />
                         <button className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 transition' onClick={() => { handleClickDetele(); }} ><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></button>
                     </div>
                 </div>
-                <Dates id={publi.id} user={user} name={publi.name} fechaInicio={publi.fecha_inicio} fechaFin={publi.Fecha_Fin} />
+                <Dates id={publi.id} fechaInicio={publi.fecha_inicio} fechaFin={publi.Fecha_Fin} />
             </div>
         </div >
     )

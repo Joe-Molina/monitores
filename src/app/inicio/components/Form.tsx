@@ -1,5 +1,5 @@
 'use client'
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { useFormContext } from '../hooks/useForm'
 import ArchiveType from './Form/ArchiveType'
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sheet"
 import { serviceSubirArchivoACarpeta } from '../services/subirPublicacion'
 import { MONITOR_IP } from '../services/EndPoints'
+import { useIpContext } from '../hooks/useIp'
 
 
 const INITIAL_STATE = {
@@ -33,25 +34,26 @@ const INITIAL_STATE = {
 export function Form() {
     const { postsState } = usePostsContext()
     const data = postsState.Posts
+    const { IpState } = useIpContext()
 
     const [file, setFile] = useState()
     const { formState, setEmptyForm } = useFormContext();
     const { setPost } = usePostsContext()
-  
+
 
     const handleClick = async () => {
         console.log(file)
 
-        
-        
-        const datos = await verificarArchivo(data, file, formState, MONITOR_IP)
-        
+
+
+        const datos = await verificarArchivo(data, file, formState, IpState)
+
         if (datos) {
             setPost(datos)
-            setEmptyForm(INITIAL_STATE) 
+            setEmptyForm(INITIAL_STATE)
         }
-        if(file){
-            await serviceSubirArchivoACarpeta(file, MONITOR_IP);
+        if (file) {
+            await serviceSubirArchivoACarpeta(file, IpState);
 
         }
     }
@@ -64,7 +66,7 @@ export function Form() {
                 <div className='dark text-neutral-200'>
                     <form className='flex flex-col p-5 gap-4' >
                         <ArchiveType />
-                        <ArchiveOrBanner setFile={setFile}  />
+                        <ArchiveOrBanner setFile={setFile} />
                         <DurationCard />
                         <Dates />
                     </form>

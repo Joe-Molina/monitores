@@ -20,7 +20,7 @@ import { editPost } from '../services/postEdit'
 import { MONITOR_IP } from '@/app/inicio/services/EndPoints'
 import { usePostsContext } from '@/app/inicio/hooks/usePosts'
 
-export default function EditPopover({ id }: any) {
+export default function EditPopover({ id, ip }: any) {
   const { setDuration, setPosition, setStartDate, setEndDate } = usePostsContext()
 
   console.log(id)
@@ -35,17 +35,18 @@ export default function EditPopover({ id }: any) {
   const handleClick = async () => {
 
 
-    const data = await editPost(edit, MONITOR_IP, id)
+    const data = await editPost(edit, ip, id)
 
     setDuration(id, data.newDuration)
+
     if (data.newPositions != 'Position vacía') {
       setPosition(data.newPositions.publi1.id, data.newPositions.publi1.position)
       if (data.newPositions.publi2) {
         setPosition(data.newPositions.publi2.id, data.newPositions.publi2.position)
       }
-
     }
-    console.log(data)
+    setEndDate(id, data.newEndDate)
+    setStartDate(id, data.newStartDate)
 
   }
 
@@ -89,9 +90,14 @@ export default function EditPopover({ id }: any) {
             }} />
           </div>
 
-          <div className="items-center gap-4 w-1/3">
+          <div className="justify-center items-center gap-4 w-1/3">
+
+            <div className='border-t border-x py-2 px-3 rounded-t-md'>
+              {edit.fechaInicio.toISOString().slice(0, 10)}
+            </div>
+
             <Popover>
-              <div className='flex items-center gap-1 text-sm font-medium'>
+              <div className='flex justify-center border items-center gap-1 p-1 text-sm font-medium rounded-b-sm'>
                 <PopoverTrigger>
                   <div className='flex items-center'><Label htmlFor="Fecha_Fin" className="text-right mr-1">
                     Fecha Inicio
@@ -113,9 +119,7 @@ export default function EditPopover({ id }: any) {
                 />
               </PopoverContent>
             </Popover>
-            <div className='border py-2 px-1 rounded-md'>
-              {edit.fechaInicio.toISOString().slice(0, 10)}
-            </div>
+
           </div>
 
           <div className="items-center gap-4 w-1/3">
@@ -143,7 +147,7 @@ export default function EditPopover({ id }: any) {
               </PopoverContent>
             </Popover>
             <div className='border py-2 px-1 rounded-md'>
-              {edit.fechaInicio.toISOString().slice(0, 10)}
+              {edit.fechaFin.toISOString().slice(0, 10)}
             </div>
           </div>
 
