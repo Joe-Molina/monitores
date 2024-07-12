@@ -4,17 +4,9 @@ import { useEffect, useState } from "react";
 import { verificarEstadoActividad } from "../inicio/services/verificarActividad";
 
 
-export const Banner = ({data}: any) => {
+export const Banner = ({ data }: any) => {
 
-    console.log(data)
-
-    const banners: any = []
-
-    data.forEach((banner: any) => {
-        if (verificarEstadoActividad(banner.fecha_inicio, banner.Fecha_Fin)) {
-            banners.push(banner)
-        }
-    });
+    const banners: any = data
 
     const [currentImage, setCurrentImage] = useState(banners[0]);
 
@@ -28,7 +20,7 @@ export const Banner = ({data}: any) => {
 
         const intervalId = setInterval(() => {
 
-            console.log((currentImageIndex + 1) % banners.length )
+            // console.log((currentImageIndex + 1) % banners.length)
 
             if ((currentImageIndex + 1) % banners.length === 0) {
                 return setCurrentImage(banners[0])
@@ -46,6 +38,6 @@ export const Banner = ({data}: any) => {
     }, [currentImage.duration, currentImageIndex]);
 
     return (
-        <div className='m-2 bg-neutral-950 rounded-sm border border-neutral-600 marquee w-full flex items-center'><img src="/media.png" alt="" className='h-7 w-10 rounded-md shadow-lg z-40 px-2 over bg-neutral-950'/><p className='text-3xl font-bold duration-700'>{currentImage.name}</p></div>
+        <div className='m-2 bg-neutral-950 rounded-sm border border-neutral-600 marquee w-full flex items-center'><img src="/media.png" alt="" className='h-7 w-10 rounded-md shadow-lg z-40 px-2 over bg-neutral-950' /><p className='text-3xl font-bold duration-700'>{currentImage.name}</p></div>
     )
 }

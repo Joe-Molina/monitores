@@ -10,7 +10,7 @@ interface props {
     children: JSX.Element | JSX.Element[]
 }
 
-const INITIAL_STATE: string = 'http://10.10.2.163:3000'
+const INITIAL_STATE: string = 'http://mediacim1:3002'
 
 export const IpProvider = ({ children }: props) => {
 

@@ -17,7 +17,6 @@ import {
     SheetHeader,
 } from "@/components/ui/sheet"
 import { serviceSubirArchivoACarpeta } from '../services/subirPublicacion'
-import { MONITOR_IP } from '../services/EndPoints'
 import { useIpContext } from '../hooks/useIp'
 
 
@@ -43,9 +42,6 @@ export function Form() {
 
     const handleClick = async () => {
         console.log(file)
-
-
-
         const datos = await verificarArchivo(data, file, formState, IpState)
 
         if (datos) {

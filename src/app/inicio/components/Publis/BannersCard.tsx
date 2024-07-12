@@ -3,10 +3,8 @@
 import { verificarEstadoActividad } from '@/app/inicio/services/verificarActividad'
 import { Switch } from "@/components/ui/switch"
 import Dates from './PublisCard/components/Dates'
-import { ImgOrVideo } from './PublisCard/components/ImgOrVideo';
-import EditPopover from './PublisCard/components/EditPopover';
+import EditPopover, { DatePickerWithRange } from './PublisCard/components/EditPopover';
 import { serviceDeletePost } from '../../services/Posts';
-import { MONITOR_IP } from '../../services/EndPoints'
 import { useIpContext } from '../../hooks/useIp'
 import { usePostsContext } from '../../hooks/usePosts'
 import { toast } from 'sonner'
@@ -17,7 +15,6 @@ import Image from 'next/image'
 export const BannersCard = ({ publi }: any) => {
     const { IpState } = useIpContext()
     const { deletePost } = usePostsContext()
-
 
     const handleClickDetele = async () => {
         const date = new Date
@@ -52,11 +49,11 @@ export const BannersCard = ({ publi }: any) => {
                     </div>
                     {/* delete publi  */}
                     <div className='w-full flex justify-end gap-1 items-center'>
-                        <EditPopover id={publi.id} ip={IpState} />
+                        <EditPopover publi={publi} ip={IpState} />
                         <button className='bg-neutral-900/70  border border-neutral-700 w-7 h-7 flex justify-center items-center rounded-sm hover:bg-red-600/10 transition' onClick={() => { handleClickDetele(); }} ><Image src='/iconos/delete.svg' alt='' width={20} height={20} /></button>
                     </div>
                 </div>
-                <Dates id={publi.id} fechaInicio={publi.fecha_inicio} fechaFin={publi.Fecha_Fin} />
+                <DatePickerWithRange fechaFin={new Date(Date.parse(publi.Fecha_Fin))} fechaInicio={new Date(Date.parse(publi.fecha_inicio))} id={publi.id} />
             </div>
         </div>
     )

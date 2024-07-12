@@ -1,61 +1,55 @@
-import React from 'react'
-import Imga from './Imagen'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { verificarEstadoActividad } from '../inicio/services/verificarActividad'
 
 import NoImage from './NoImage'
 import { Banner } from './Banner'
 import { getPosts } from '../inicio/services/Posts'
 import { MONITOR_IP } from '../inicio/services/EndPoints'
+import ImageRotator from './Imagen'
+import { sortByPriority } from './services/sortByPriority'
+import { separatePosts } from './services/separatePosts'
+import { getAllPosts } from './services/getAllPosts'
+import { usePostsContext } from '../inicio/hooks/usePosts'
+import { useIpContext } from '../inicio/hooks/useIp'
 
-async function Vista() {
+function Vista() {
+    const { IpState } = useIpContext()
+    const { postsState, setPosts } = usePostsContext()
 
-    const publicidades = await getPosts(MONITOR_IP)
-
-    console.log(publicidades)
-
-    const publis = await publicidades.filter((element: { type: string }) => {
-
-        if (element.type == "img" || element.type == "video") {
-            return true
-        }
+    const [dividedPosts, setDividedPosts] = useState({
+        publis: [],
+        Banners: []
     })
 
-    const banners = await publicidades.filter((element: { type: string }) => {
+    const posts = async (URL: string) => {
+        setPosts(await getPosts(URL))
+    }
 
-        if (element.type == "banner") {
+    useEffect(() => {
+        posts(IpState)
+        console.log('san pedro')
+    }, [])
 
-            return true
-        }
+    useEffect(() => {
 
-    })
+        getAllPosts(postsState, setDividedPosts)
+        console.log('aca no cambia')
+        console.log(dividedPosts)
+    }, [postsState])
 
-    const ActivePublis = publis.filter((publi: any) => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
-    const ActiveBanners = banners.filter((publi: any) => verificarEstadoActividad((publi.fecha_inicio), publi.Fecha_Fin) === true)
 
-    console.log(ActivePublis)
-
-    const sortByPriority = (a: { position: number }, b: { position: number }) => {
-        if (a.position < b.position) return -1;
-        if (a.position > b.position) return 1;
-        return 0;
-    };
-    //@ts-ignore
-    const sortedArray = [...ActivePublis].sort(sortByPriority);
     return (
         <div className='bg-black w-screen h-screen' >
-            {ActiveBanners.length == 0 ?
-                <div className={`h-[100%]`}>
-                    {ActivePublis.length > 0 && <Imga data={sortedArray} />}
-                    {ActivePublis.length === 0 && <NoImage />}
-                </div>
-                :
-                <><div className={`h-[95%]`}>
-                    {ActivePublis.length > 0 && <Imga data={sortedArray} />}
-                    {ActivePublis.length === 0 && <NoImage />}
-                </div><div className='h-[5%] flex w-full'>
-                        <Banner data={banners} />
-                    </div></>
-            }
+            <div className={dividedPosts.Banners.length == 0 ? `h-[100%]` : `h-[95%]`}>
+                {dividedPosts.publis.length > 0 && <ImageRotator data={dividedPosts.publis} />}
+                {dividedPosts.publis.length === 0 && <NoImage />}
+            </div>
+            {dividedPosts.Banners.length != 0 &&
+                <div className='h-[5%] flex w-full'>
+                    <Banner data={dividedPosts.Banners} />
+                </div>}
         </div>
     )
 }

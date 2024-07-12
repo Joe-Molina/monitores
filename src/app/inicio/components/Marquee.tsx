@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { PublisCollection } from './Publis/PublisCollection'
 import { BannersCollection } from './Publis/BannersCollection'
 import { usePostsContext } from '../hooks/usePosts'
 import { getPosts } from '../services/Posts'
-import { MONITOR_IP } from '../services/EndPoints'
 
 import {
     Select,
@@ -33,11 +32,9 @@ export function SelectIp() {
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup >
-                    <SelectLabel>Fruits</SelectLabel>
-                    <SelectItem value="http://mediacim1:3000/">Monitor 1</SelectItem>
-                    <SelectItem value="http://mediacim2:3000/">Monitor 2</SelectItem>
-                    <SelectItem value="http://10.10.2.163:3000" >Servidor</SelectItem>
-                    <SelectItem value="http://10.10.2.163:3001" >Servidor2</SelectItem>
+                    <SelectLabel>Monitores</SelectLabel>
+                    <SelectItem value="http://mediacim1:3002">Monitor 1</SelectItem>
+                    <SelectItem value="http://mediacim2:3002">Monitor 2</SelectItem>
                 </SelectGroup>
             </SelectContent>
         </Select>
@@ -51,6 +48,7 @@ function Marquee() {
     const posts = async (URL: string) => {
         setPosts(await getPosts(URL))
     }
+
     useEffect(() => {
         posts(IpState)
     }, [IpState])

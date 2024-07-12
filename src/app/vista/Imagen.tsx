@@ -1,56 +1,20 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { verificarEstadoActividad } from '../inicio/services/verificarActividad';
 import ImageOrVideo from './img';
 import { Progress } from "@/components/ui/progress"
-
-export const useCountdown = (length: number) => {
-    const [seconds, setSeconds] = useState(length);
-
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setSeconds((prevSeconds) =>
-                prevSeconds > 0 ? prevSeconds - 1 : prevSeconds,
-            );
-        }, 1000)
-
-        return () => clearTimeout(timeoutId)
-
-    }, [seconds]);
-
-    return { seconds }
-}
-
+import { usePostsContext } from '../inicio/hooks/usePosts';
+import { useIpContext } from '../inicio/hooks/useIp';
+import { getPosts } from '../inicio/services/Posts';
 
 const ImageRotator = ({ data }: any) => {
+    const { IpState } = useIpContext()
+    const { setPosts } = usePostsContext()
 
-    let [PriorityOrder, setPriorityOrder] = useState(data)
 
-    useEffect(() => {
+    const imagenes: any = data
 
-        const sortByPriority = (a: { position: number }, b: { position: number }) => {
-            if (a.position < b.position) return -1;
-            if (a.position > b.position) return 1;
-            return 0;
-        };
-
-        const sortedArray = [...data].sort(sortByPriority);
-        setPriorityOrder(sortedArray);
-    }, [])
-
-    const publicaciones = PriorityOrder
-
-    //@ts-ignore
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const imagenes: any = []
-
-    publicaciones.forEach((imagen: any) => {
-        if (verificarEstadoActividad(imagen.fecha_inicio, imagen.Fecha_Fin)) {
-            imagenes.push(imagen)
-        }
-    });
-    //@ts-ignore
     const [currentImage, setCurrentImage] = useState(imagenes[0]);
 
     const currentImageIndex = imagenes.findIndex(
@@ -59,12 +23,15 @@ const ImageRotator = ({ data }: any) => {
 
     useEffect(() => {
 
-        const intervalId = setInterval(() => {
+        const intervalId = setInterval(async () => {
 
             if ((currentImageIndex + 1) % imagenes.length === 0) {
                 // en vez de un location reload podria hacer un una peticion fetch que actualizara el estado de las publicaciones al final de cada ciclo,
                 // lo que evitaria la necesidad de tener que recargar la pagina para obtener los nuevos datos
-                return location.reload();
+                setPosts(await getPosts(IpState))
+                setCurrentImage(imagenes[0]);
+                // return location.reload();
+
             }
 
             let nextIndex = (currentImageIndex + 1) % imagenes.length;
@@ -77,7 +44,6 @@ const ImageRotator = ({ data }: any) => {
     }, [currentImage.duration, currentImageIndex, imagenes]);
 
     const handleKeyPress = (event: { key: string; }) => {
-        console.log(event.key)
         if (event.key === 'ArrowRight') {
             let nextIndex = (currentImageIndex + 1) % imagenes.length;
             setCurrentImage(imagenes[nextIndex]);
@@ -100,11 +66,7 @@ const ImageRotator = ({ data }: any) => {
     }, [imagenes.length])
 
     const Timer = () => {
-        // let { seconds } = useCountdown(currentImage.duration / 1000)
-
-        const total = publicaciones.length
-
-
+        const total = data.length
         return (
             <div>
                 <div className="flex items-center justify-center z-30 absolute border border-white w-10 h-7 rounded-sm top-5 right-3 opacity-70 bg-slate-50 text-neutral-950">{currentImageIndex + 1}/{total}</div>
@@ -132,9 +94,8 @@ const ImageRotator = ({ data }: any) => {
     return (
         <div className='relative h-full'>
             <Timer />
-            <ProgressBar />
+            {/* <ProgressBar /> */}
             <ImageOrVideo currentImage={currentImage} fadeIn={fadeIn} />
-
             <button className='absolute h-full w-full  top-0 right-0' onKeyDown={handleKeyPress} ></button>
         </div>
     );

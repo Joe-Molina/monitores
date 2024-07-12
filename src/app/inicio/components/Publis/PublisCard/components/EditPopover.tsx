@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,30 +14,111 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+
+import { addDays, format } from "date-fns"
+import { DateRange } from "react-day-picker"
+import { CalendarIcon } from "@radix-ui/react-icons"
+
 import { editPost } from '../services/postEdit'
 import { MONITOR_IP } from '@/app/inicio/services/EndPoints'
 import { usePostsContext } from '@/app/inicio/hooks/usePosts'
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { useIpContext } from '@/app/inicio/hooks/useIp'
 
-export default function EditPopover({ id, ip }: any) {
+export function DatePickerWithRange({ fechaFin, fechaInicio, id }: any) {
+  const { IpState } = useIpContext()
+  const { setEndDate, setStartDate } = usePostsContext()
+
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(fechaInicio),
+    to: new Date(fechaFin),
+  })
+
+  useEffect(() => {
+    if (date) {
+      const edit = {
+        fechaFin: date.to,
+        fechaInicio: date.from,
+      }
+      const datos = async () => {
+        const data = await editPost(edit, IpState, id)
+        setEndDate(id, data.newEndDate)
+        setStartDate(id, data.newStartDate)
+      }
+      datos()
+    }
+
+
+
+  }, [date])
+
+  return (
+    <div className={cn("grid gap-2")}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={"outline"}
+            className={cn(
+              "w-[300px] justify-start text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, "dd/MM/yyyy")} - {" "}
+                  {format(date.to, "dd/MM/yyyy")}
+                </>
+              ) : (
+                format(date.from, "dd/MM/yyyy")
+              )
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}
+
+
+export default function EditPopover({ publi, ip }: any) {
   const { setDuration, setPosition, setStartDate, setEndDate } = usePostsContext()
 
-  console.log(id)
-
   const [edit, setEdit] = React.useState({
-    position: 0,
-    duration: 0,
-    fechaInicio: new Date(),
-    fechaFin: new Date(),
+    position: publi.position,
+    duration: publi.duration,
+    fechaInicio: new Date(Date.parse(publi.fecha_inicio)),
+    fechaFin: new Date(Date.parse(publi.Fecha_Fin)),
   });
+
+  console.log()
 
   const handleClick = async () => {
 
 
-    const data = await editPost(edit, ip, id)
+    const data = await editPost(edit, ip, publi.id)
 
-    setDuration(id, data.newDuration)
+    setDuration(publi.id, data.newDuration)
 
     if (data.newPositions != 'Position vacía') {
       setPosition(data.newPositions.publi1.id, data.newPositions.publi1.position)
@@ -45,8 +126,8 @@ export default function EditPopover({ id, ip }: any) {
         setPosition(data.newPositions.publi2.id, data.newPositions.publi2.position)
       }
     }
-    setEndDate(id, data.newEndDate)
-    setStartDate(id, data.newStartDate)
+    setEndDate(publi.id, data.newEndDate)
+    setStartDate(publi.id, data.newStartDate)
 
   }
 
@@ -88,67 +169,6 @@ export default function EditPopover({ id, ip }: any) {
                 console.log(edit)
               }
             }} />
-          </div>
-
-          <div className="justify-center items-center gap-4 w-1/3">
-
-            <div className='border-t border-x py-2 px-3 rounded-t-md'>
-              {edit.fechaInicio.toISOString().slice(0, 10)}
-            </div>
-
-            <Popover>
-              <div className='flex justify-center border items-center gap-1 p-1 text-sm font-medium rounded-b-sm'>
-                <PopoverTrigger>
-                  <div className='flex items-center'><Label htmlFor="Fecha_Fin" className="text-right mr-1">
-                    Fecha Inicio
-                  </Label><Image src='/iconos/up.svg' alt='' width={20} height={20} />
-                  </div>
-                </PopoverTrigger>
-              </div>
-              <PopoverContent>
-                <Calendar
-                  mode="single"
-                  // selected={date}
-                  onSelect={(e) => {
-                    if (e) {
-                      setEdit({ ...edit, fechaInicio: e });
-                      console.log(edit)
-                    }
-                  }}
-                  className="rounded-md flex justify-center border"
-                />
-              </PopoverContent>
-            </Popover>
-
-          </div>
-
-          <div className="items-center gap-4 w-1/3">
-            <Popover>
-              <div className='flex items-center gap-1 text-sm font-medium'>
-                <PopoverTrigger>
-                  <div className='flex items-center'><Label htmlFor="Fecha_Fin" className="text-right mr-1">
-                    Fecha Fin
-                  </Label><Image src='/iconos/down.svg' alt='' width={20} height={20} />
-                  </div>
-                </PopoverTrigger>
-              </div>
-              <PopoverContent>
-                <Calendar
-                  mode="single"
-                  // selected={date}
-                  onSelect={(e) => {
-                    if (e) {
-                      setEdit({ ...edit, fechaFin: e });
-                      console.log(edit)
-                    }
-                  }}
-                  className="rounded-md flex justify-center border"
-                />
-              </PopoverContent>
-            </Popover>
-            <div className='border py-2 px-1 rounded-md'>
-              {edit.fechaFin.toISOString().slice(0, 10)}
-            </div>
           </div>
 
         </div>

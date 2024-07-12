@@ -23,7 +23,7 @@ export function PublisCollection() {
     }, [Posts])
 
     return (
-        <div className=' p-3 flex gap-4 justify-center  lg:justify-stretch items-center flex-wrap overflow-auto text-white border-b'>
+        <div className=' p-3 flex gap-4 justify-center  lg:justify-evenly items-center flex-wrap overflow-auto text-white border-b'>
 
             {
                 PriorityOrder.map((publi: any, index: any) => (
