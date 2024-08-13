@@ -14,7 +14,7 @@ export const ImgOrVideo = ({ publi }: any) => {
             </a>
           </div>
           :
-          <video src={'/fotos/' + publi.name} controls ></video>
+          <video src={IpState + '/fotos/' + publi.name} controls ></video>
       }
     </div>
   )

@@ -15,12 +15,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { CalendarIcon } from "@radix-ui/react-icons"
 
 import { editPost } from '../services/postEdit'
-import { MONITOR_IP } from '@/app/inicio/services/EndPoints'
 import { usePostsContext } from '@/app/inicio/hooks/usePosts'
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
@@ -57,7 +56,6 @@ export function DatePickerWithRange({ fechaFin, fechaInicio, id }: any) {
 
 
   }, [date])
-
   return (
     <div className={cn("grid gap-2")}>
       <Popover>
