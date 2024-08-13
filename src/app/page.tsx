@@ -1,8 +1,8 @@
 import Marquee from "./inicio/components/Marquee";
 import { FormProvider } from "./inicio/context/FormProvider";
 import Nav from './inicio/components/Nav';
-import { conect } from "./getSession";
-import { redirect } from "next/navigation";
+// import { conect } from "./getSession";
+// import { redirect } from "next/navigation";
 
 
 
